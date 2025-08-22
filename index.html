@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fredrik Grill — Century 21 Forever Homes</title>
   <meta name="theme-color" content="#111111" />
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <style>
     :root {
       --bg: #0e0e0e;
       --card: #1a1a1a;
-      --gold: #d4af37;
+      --gold: #BEAF87;
       --text: #ffffff;
       --muted: #b3b3b3;
     }
@@ -107,6 +107,9 @@
     .footer {
       margin-top: 14px; color: #7d7d7d; font-size: 11px; text-align: center;
     }
+    .share-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -131,7 +134,7 @@
       <a class="btn" href="tel:+351925898231">📞 Call +351 925 898 231</a>
       <div class="inline">
         <a class="btn secondary" href="mailto:f.grill@century21.pt">✉️ Email</a>
-        <a class="btn secondary" href="https://wa.me/+351925898231">💬 WhatsApp</a>
+        <a class="btn secondary" href="https://wa.me/351925898231">💬 WhatsApp</a>
       </div>
       <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=Estrada%20Do%20Farol%2084%2C%208400-505%2C%20Carvoeiro">📍 Estrada Do Farol 84, 8400-505, Carvoeiro</a>
       <a class="btn" href="https://forever-homes.century21.pt" target="_blank" rel="noopener">🌐 Visit Website</a>
@@ -139,9 +142,9 @@
         <a class="btn" href="./fredrik-grill.vcf" download>💾 Save Contact (.vcf)</a>
         <a class="btn" href="./fredrik-card.pdf" download>📄 Download PDF</a>
       </div>
-      <div class="inline">
-        <a class="btn secondary" href="sms:?&body=Fredrik Grill%20—%20Century%2021%20Forever%20Homes%0Ahttps://forever-homes.century21.pt%0A(Open%20my%20digital%20card%20via%20the%20link%20you%20received)">📱 Share via SMS</a>
-        <a class="btn secondary" href="https://api.whatsapp.com/send?text=Fredrik Grill%20—%20Century%2021%20Forever%20Homes%0Ahttps://forever-homes.century21.pt%0AOpen%20my%20digital%20card%20link%20I%20sent%20you." target="_blank">🔗 Share via WhatsApp</a>
+      <div class="share-row">
+        <a class="btn secondary" id="sms-share" href="sms:&body=Fredrik Grill%20—%20Century%2021%20Forever%20Homes%0Ahttps://forever-homes.century21.pt%0A(Open%20my%20digital%20card%20link%20I%20sent%20you)">📱 Share via SMS</a>
+        <button class="btn secondary" id="web-share" type="button">🔗 Share</button>
       </div>
     </section>
 
@@ -159,6 +162,23 @@
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js").catch(console.error);
       });
+    }
+    // Web Share API (native share sheet)
+    const shareBtn = document.getElementById("web-share");
+    if (shareBtn && navigator.share) {
+      shareBtn.addEventListener("click", async () => {
+        try {
+          await navigator.share({
+            title: "Fredrik Grill — Century 21 Forever Homes",
+            text: "My digital business card",
+            url: window.location.href
+          });
+        } catch(e) {
+          console.log(e);
+        }
+      });
+    } else if (shareBtn) {
+      shareBtn.style.display = "none";
     }
   </script>
 </body>
