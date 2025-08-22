@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fredrik Grill — Century 21 Forever Homes</title>
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --card: #1a1a1a;
+      --gold: #d4af37;
+      --text: #ffffff;
+      --muted: #b3b3b3;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .brand-badge {
+      width: 44px; height: 44px; border-radius: 12px; background: var(--gold);
+      display: grid; place-items: center; color: #111; font-weight: 900; letter-spacing: 0.5px;
+    }
+    .brand h1 { font-size: 16px; margin: 0; font-weight: 700; color: var(--text); }
+    .brand p { margin: 0; color: var(--muted); font-size: 12px; }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0 6px 0;
+      border-top: 1px solid #2a2a2a;
+      border-bottom: 1px solid #2a2a2a;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #0e0e0e;
+      border: 2px solid var(--gold);
+      display: grid; place-items: center; font-weight: 800; color: var(--gold);
+      font-size: 20px;
+    }
+    .who h2 { margin: 0 0 4px 0; font-size: 18px; color: var(--gold); }
+    .who p { margin: 0; color: var(--muted); font-size: 13px; }
+    .actions {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    a.btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      background: var(--gold);
+      color: #111;
+      font-weight: 700;
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+    a.btn.secondary {
+      background: #252525;
+      color: var(--text);
+      border: 1px solid #333;
+      font-weight: 600;
+    }
+    .inline {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .meta {
+      margin-top: 12px;
+      padding: 12px;
+      background: #121212;
+      border: 1px solid #262626;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .meta a { color: var(--gold); text-decoration: none; }
+    .footer {
+      margin-top: 14px; color: #7d7d7d; font-size: 11px; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand">
+      <div class="brand-badge">C21</div>
+      <div>
+        <h1>Century 21 Forever Homes</h1>
+        <p>Algarve, Portugal</p>
+      </div>
+    </div>
+
+    <section class="profile">
+      <div class="avatar">FG</div>
+      <div class="who">
+        <h2>Fredrik Grill</h2>
+        <p>Broker / Owner – Century 21 Forever Homes</p>
+      </div>
+    </section>
+
+    <section class="actions">
+      <a class="btn" href="tel:+351925898231">📞 Call +351 925 898 231</a>
+      <div class="inline">
+        <a class="btn secondary" href="mailto:f.grill@century21.pt">✉️ Email</a>
+        <a class="btn secondary" href="https://wa.me/+351925898231">💬 WhatsApp</a>
+      </div>
+      <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=Estrada%20Do%20Farol%2084%2C%208400-505%2C%20Carvoeiro">📍 Estrada Do Farol 84, 8400-505, Carvoeiro</a>
+      <a class="btn" href="https://forever-homes.century21.pt" target="_blank" rel="noopener">🌐 Visit Website</a>
+      <div class="inline">
+        <a class="btn" href="./fredrik-grill.vcf" download>💾 Save Contact (.vcf)</a>
+        <a class="btn" href="./fredrik-card.pdf" download>📄 Download PDF</a>
+      </div>
+      <div class="inline">
+        <a class="btn secondary" href="sms:?&body=Fredrik Grill%20—%20Century%2021%20Forever%20Homes%0Ahttps://forever-homes.century21.pt%0A(Open%20my%20digital%20card%20via%20the%20link%20you%20received)">📱 Share via SMS</a>
+        <a class="btn secondary" href="https://api.whatsapp.com/send?text=Fredrik Grill%20—%20Century%2021%20Forever%20Homes%0Ahttps://forever-homes.century21.pt%0AOpen%20my%20digital%20card%20link%20I%20sent%20you." target="_blank">🔗 Share via WhatsApp</a>
+      </div>
+    </section>
+
+    <section class="meta">
+      <b>Install this card:</b> open in Safari → Share → <i>Add to Home Screen</i>. Works offline once opened (via service worker).
+    </section>
+
+    <div class="footer">
+      © 2025 Century 21 Forever Homes. C21® trademarks are the property of their respective owners.
+    </div>
+  </main>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(console.error);
+      });
+    }
+  </script>
+</body>
+</html>
