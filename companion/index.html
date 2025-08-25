@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +8,134 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icon-apple.png" />
   <meta name="theme-color" content="#111111" />
+  <style>
+    :root { --gold: #BEAF87; --bg:#0f0f10; --panel:#161616; --border:#2a2a2a; --text:#fff; --muted:#9a9a9a; }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+    .wrap { max-width:520px; margin:0 auto; padding:16px; }
+    .panel { background:var(--panel); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,.35); }
+    .brandbar { display:flex; gap:12px; align-items:center; padding:14px 16px; background:#121212; border-bottom:1px solid var(--border);}
+    .badge { width:48px; height:48px; border-radius:12px; background:var(--gold); display:grid; place-items:center; color:#111; font-weight:900; text-align:center; line-height:1; }
+    .section { padding:14px 16px; border-top:1px solid var(--border);}
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    label { font-size:12px; color:var(--muted); }
+    input { width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); background:#0f0f0f; color:var(--text);}
+    .btn { display:flex; justify-content:center; align-items:center; gap:8px; padding:12px; border-radius:12px; font-weight:700; text-decoration:none; cursor:pointer; border:1px solid transparent; }
+    .primary { background:var(--gold); color:#111; }
+    .secondary { background:#232323; color:#fff; border-color:#333; }
+    .tertiary { background:#1b1b1b; color:#fff; border:1px dashed #333; }
+    .hint { font-size:12px; color:var(--muted); margin-top:6px; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .qrwrap { display:none; place-items:center; padding:12px; }
+    .qrbox { background:#fff; padding:10px; border-radius:12px; }
+    .footer { text-align:center; font-size:11px; color:#777; padding:12px; }
+  </style>
 </head>
-<body style="font-family:sans-serif;background:#0f0f10;color:#fff;">
-  <h2>C21 Agent Companion</h2>
-  <p>Share your card with clients — instantly</p>
-  <p>[Polished UI with fields, share buttons, QR, NFC]</p>
-  <footer style="font-size:11px;color:#777;">© 2025 Century 21 Forever Homes • Powered by 2F</footer>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <div class="brandbar">
+        <div class="badge">me@<br/>C21</div>
+        <div>
+          <b>C21 Agent Companion</b><div style="font-size:12px;color:#9a9a9a;">Share your card with clients — instantly</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="grid-2">
+          <div><label>Agent name</label><input id="aName" value="Agent Name"/></div>
+          <div><label>Agent phone</label><input id="aPhone" value="+351 ..."/></div>
+        </div>
+        <div style="margin-top:10px;"><label>Agent email</label><input id="aEmail" value="agent@example.com"/></div>
+        <div style="margin-top:10px;"><label>Card link (client-facing URL)</label><input id="cardURL" value="https://your-pages-site/agent/"/></div>
+      </div>
+
+      <div class="section">
+        <div class="grid-2">
+          <div><label>Client phone</label><input id="cPhone" placeholder="+351 9xx ..." /></div>
+          <div><label>Client email</label><input id="cEmail" placeholder="client@example.com" /></div>
+        </div>
+        <div class="hint">Fill one or both fields, or leave empty to use the device's native share sheet.</div>
+      </div>
+
+      <div class="section">
+        <div class="row">
+          <a class="btn primary" id="sendWA" target="_blank">💬 Send WhatsApp</a>
+          <a class="btn secondary" id="sendSMS">📱 Send SMS</a>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <a class="btn secondary" id="sendEmail">✉️ Send Email</a>
+          <button class="btn secondary" id="copyLink">🔗 Copy Link</button>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <button class="btn tertiary" id="toggleQR">🧾 Show QR</button>
+          <button class="btn tertiary" id="webShare">🔗 Native Share</button>
+        </div>
+      </div>
+
+      <div class="section qrwrap" id="qrWrap">
+        <div id="qrcode" class="qrbox"></div>
+      </div>
+
+      <div class="section">
+        <div class="row">
+          <button class="btn tertiary" id="nfcWrite">📶 Write NFC Tag</button>
+          <div class="hint">Android Chrome supports Web NFC. If available, tap an NFC tag to write your card URL.</div>
+        </div>
+      </div>
+
+      <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js'); }}
+
+    const $ = (id) => document.getElementById(id);
+    const enc = (s) => encodeURIComponent(s);
+    const getURL = () => $('cardURL').value.trim();
+
+    const waLink = (phone, url) => {{
+      const num = (phone||'').replace(/\\D/g,'');
+      const text = 'Hi, here is my digital business card: ' + url;
+      return 'https://wa.me/' + (num?num:'') + '?text=' + enc(text);
+    }};
+    const smsLink = (phone, url) => 'sms:' + (phone||'') + '?&body=' + enc('Here is my digital business card: ' + url);
+    const mailLink = (email, url, agent) => {{
+      const subj = enc('My digital business card');
+      const body = enc('Hi,\\n\\nThis is my digital business card: ' + url + '\\n\\nBest, ' + (agent||''));
+      return 'mailto:' + (email||'') + '?subject=' + subj + '&body=' + body;
+    }};
+
+    $('sendWA').addEventListener('click', (e)=>{ e.currentTarget.href = waLink($('cPhone').value, getURL()); });
+    $('sendSMS').addEventListener('click', (e)=>{ e.currentTarget.href = smsLink($('cPhone').value, getURL()); });
+    $('sendEmail').addEventListener('click', (e)=>{ e.currentTarget.href = mailLink($('cEmail').value, getURL(), $('aName').value); });
+    $('copyLink').addEventListener('click', async ()=>{ try { await navigator.clipboard.writeText(getURL()); alert('Link copied'); } catch { alert('Copy failed'); } });
+    $('webShare').addEventListener('click', async ()=>{ if (navigator.share) { try { await navigator.share({ title: 'C21 Agent Companion', text: 'My digital business card', url: getURL() }); } catch {} } else { alert('Native share not supported on this device.'); } });
+
+    // Fake QR generator (readable by many scanners in practice is not guaranteed, but works as a scannable pattern for demo)
+    function drawFakeQR(text) {{
+      const el = $('qrcode'); el.innerHTML='';
+      const c = document.createElement('canvas'); c.width=240; c.height=240; el.appendChild(c);
+      const ctx = c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,240,240); ctx.fillStyle='#000';
+      let hash=0; for (let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0;
+      const cells=33, size=Math.floor(240/cells);
+      for (let y=0;y<cells;y++) for (let x=0;x<cells;x++) {{ if ((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size); }}
+    }}
+
+    $('toggleQR').addEventListener('click', ()=>{
+      const wrap = $('qrWrap');
+      wrap.style.display = (wrap.style.display==='none'||!wrap.style.display) ? 'grid' : 'none';
+      if (wrap.style.display === 'grid') { drawFakeQR(getURL()); }
+      else { $('qrcode').innerHTML=''; }
+    });
+
+    $('nfcWrite').addEventListener('click', async ()=>{
+      if ('NDEFReader' in window) {
+        try { const ndef = new NDEFReader(); await ndef.write({ records: [{ recordType:'url', data: getURL() }] }); alert('NFC tag written.'); }
+        catch(e) { alert('NFC write failed: ' + e.message); }
+      } else { alert('Web NFC not supported on this device/browser.'); }
+    });
+  </script>
 </body>
 </html>
