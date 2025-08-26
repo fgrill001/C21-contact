@@ -1,5 +1,5 @@
 {
-  "name": "C21 Agent Companion",
+  "name": "C21 Consultant Companion",
   "short_name": "C21 Companion",
   "start_url": "./index.html",
   "display": "standalone",
@@ -9,12 +9,14 @@
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
