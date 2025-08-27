@@ -6,7 +6,7 @@
       "email": "georgiaellery@century21.pt",
       "phone": "351961559450",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_27e13a43-0eb0-4081-aedc-7dd2c973f3d7.png"
+      "avatar": "./avatars/georgia-ellery.jpg"
     },
     {
       "id": "filipe-rodrigues",
@@ -14,7 +14,7 @@
       "email": "filipemrodrigues@century21.pt",
       "phone": "925178706",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_0a5842a3-7204-44da-8803-147efe721e1c.png"
+      "avatar": "./avatars/filipe-rodrigues.jpg"
     },
     {
       "id": "anabela-de-almeida-lindo",
@@ -22,7 +22,7 @@
       "email": "abelalindo@century21.pt",
       "phone": "966342082",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/profile-photo_1297a086-a93e-4826-9d48-59aa12a0ff25.jpg"
+      "avatar": "./avatars/anabela-de-almeida-lindo.jpg"
     },
     {
       "id": "doriza-linden",
@@ -30,7 +30,7 @@
       "email": "dorizalinden@century21.pt",
       "phone": "351914151813",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_e76ebae4-c8de-4104-a63c-ec2e1e69728c.png"
+      "avatar": "./avatars/doriza-linden.jpg"
     },
     {
       "id": "jacqueline-smith",
@@ -38,7 +38,7 @@
       "email": "jsmith@century21.pt",
       "phone": "351963828251",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/aa9bc304-9cb7-4389-ad45-7630bbeb476a/Jacqueline%20Smith%20smaller.jpg?1743769186283"
+      "avatar": "./avatars/jacqueline-smith.jpg"
     },
     {
       "id": "ashley-ortego",
@@ -46,7 +46,7 @@
       "email": "ashleyortego@century21.pt",
       "phone": "351924481382",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/4687addc-eae5-4bfd-8dfa-831661cb83b6/me2025June.jpg?1751802452141"
+      "avatar": "./avatars/ashley-ortego.jpg"
     },
     {
       "id": "sandra-almeida-monteiro",
@@ -54,7 +54,7 @@
       "email": "sandram@century21.pt",
       "phone": "965662170",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/1964fd45-776d-4a6d-8599-ebaac0fec459/SAMC21.jpg?1752691997845"
+      "avatar": "./avatars/sandra-almeida-monteiro.jpg"
     },
     {
       "id": "j-lia-guerra",
@@ -62,7 +62,7 @@
       "email": "julia.guerra@century21.pt",
       "phone": "351926422451",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_e91d7c78-4b03-43fa-95ed-55de4aa94937.png"
+      "avatar": "./avatars/j-lia-guerra.jpg"
     },
     {
       "id": "paula-mendes",
@@ -70,7 +70,7 @@
       "email": "paulamendes@century21.pt",
       "phone": "351919433751",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_4fc9fb01-f03c-4a33-8294-e5cb3cace59a.png"
+      "avatar": "./avatars/paula-mendes.jpg"
     },
     {
       "id": "stefanie-phu-lorenz",
@@ -78,7 +78,7 @@
       "email": "stefanie.phulorenz@century21.pt",
       "phone": "351920027997",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/b01f1011-a340-487c-a959-671a16bf0f99/profilpic.jpg?1752234320035"
+      "avatar": "./avatars/stefanie-phu-lorenz.jpg"
     },
     {
       "id": "rozanne-van-lopik",
@@ -86,7 +86,7 @@
       "email": "rvanlopik@century21.pt",
       "phone": "31638822851",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/06efa882-ccc6-4cba-9bed-1eda9e4818be/Roos1.jpg?1748003243551"
+      "avatar": "./avatars/rozanne-van-lopik.jpg"
     },
     {
       "id": "century-21-forever-homes",
@@ -94,7 +94,7 @@
       "email": "forever.homes@century21.pt",
       "phone": "351925178706",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/profile-photo_a2ee9cda-5de8-40da-8cf2-d87cf29490ce.jpg"
+      "avatar": "./avatars/century-21-forever-homes.jpg"
     },
     {
       "id": "frank-remiatte",
@@ -102,7 +102,7 @@
       "email": "frankremiatte@century21.pt",
       "phone": "351962534408",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/84f6b04f-f8da-4885-958e-accb8ddc6441/Headshot%202.jpg?1744289542048"
+      "avatar": "./avatars/frank-remiatte.jpg"
     },
     {
       "id": "carl-fredrik-claesson-grill",
@@ -110,7 +110,7 @@
       "email": "f.grill@century21.pt",
       "phone": "351925898231",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/profile-photo_eeecba09-1623-4e2f-9dfb-c7b2900e74be.jpg"
+      "avatar": "./avatars/carl-fredrik-claesson-grill.jpg"
     },
     {
       "id": "shubham-verma",
@@ -118,7 +118,7 @@
       "email": "shubham@century21.pt",
       "phone": "351920273417",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/cb7791c7-ebd6-4070-b668-f9e153197699/Shubham%20profile%20cv.png?1750687308284"
+      "avatar": "./avatars/shubham-verma.jpg"
     },
     {
       "id": "gon-alo-alexandre-guerreiro-ri-o",
@@ -126,7 +126,7 @@
       "email": "grico@century21.pt",
       "phone": "925436761",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_e7425a60-7880-41a1-b58b-19fad6cd4f72.png"
+      "avatar": "./avatars/gon-alo-alexandre-guerreiro-ri-o.jpg"
     },
     {
       "id": "vitor-mendes",
@@ -134,7 +134,7 @@
       "email": "mendesvitor@century21.pt",
       "phone": "933030200",
       "card_link": "https://fgrill001.github.io/C21-contact/",
-      "avatar": "https://brumjtydtlxhooqrrsch.supabase.co/storage/v1/object/public/avatars/agent-photo_aa72a0dd-a759-4d0a-90af-df47aee6601f.png"
+      "avatar": "./avatars/vitor-mendes.jpg"
     }
   ]
 }
