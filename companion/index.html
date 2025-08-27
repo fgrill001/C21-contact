@@ -24,6 +24,10 @@
     .tertiary { background:#1b1b1b; color:#fff; border:1px dashed #333; }
     .hint { font-size:12px; color:var(--muted); margin-top:6px; }
     .footer { text-align:center; font-size:11px; color:#777; padding:12px; }
+    .idbar { display:flex; gap:8px; align-items:center; }
+    .avatar { width:44px; height:44px; border-radius:50%; border:2px solid var(--gold); background:#0f0f0f; background-size:cover; background-position:center; }
+    .ro { background:#101010; border:1px dashed #333; padding:10px; border-radius:10px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
   </style>
 </head>
 <body>
@@ -38,21 +42,21 @@
       </div>
 
       <div class="section">
-        <label>My name</label>
-        <input id="aName" placeholder="Full name" />
+        <div class="idbar">
+          <div class="avatar" id="myAvatar"></div>
+          <div>
+            <div style="font-weight:800;color:var(--gold);" id="myName">My name</div>
+            <div style="font-size:12px;color:var(--muted)" id="myEmail">My email</div>
+          </div>
+        </div>
       </div>
       <div class="section">
         <label>My phone</label>
-        <input id="aPhone" placeholder="+351 9xx ..." />
-      </div>
-      <div class="section">
-        <label>My email</label>
-        <input id="aEmail" placeholder="name@agency.com" />
+        <div id="myPhone" class="ro mono">+351 ...</div>
       </div>
       <div class="section">
         <label>My card link</label>
-        <input id="cardURL" placeholder="https://your-pages-site/consultant/" />
-        <div class="hint">Clients open this link to see your digital business card.</div>
+        <div id="myCard" class="ro mono">https://...</div>
       </div>
 
       <div class="section">
@@ -62,7 +66,7 @@
       <div class="section">
         <label>Client email</label>
         <input id="cEmail" placeholder="client@example.com" />
-        <div class="hint">Fill one or both fields, or leave empty to use the device's native share sheet.</div>
+        <div class="hint">Fill one or both fields, or leave empty to use WhatsApp/SMS/Email with blank recipient.</div>
       </div>
 
       <div class="section">
@@ -70,7 +74,6 @@
         <a class="btn secondary" id="sendSMS">📱 Send SMS</a>
         <a class="btn secondary" id="sendEmail">✉️ Send Email</a>
         <button class="btn secondary" id="copyLink">🔗 Copy Link</button>
-        <button class="btn tertiary" id="webShare">🔗 Native Share</button>
         <button class="btn tertiary" id="toggleQR">🧾 Show QR</button>
       </div>
 
@@ -92,27 +95,71 @@
 
     const $ = (id) => document.getElementById(id);
     const enc = (s) => encodeURIComponent(s);
-    const getURL = () => $('cardURL').value.trim();
 
-    const waLink = (phone, url) => {
-      const num = (phone||'').replace(/\D/g,'');
-      const text = 'Hi, here is my digital business card: ' + url;
+    // Profile loading
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || localStorage.getItem('consultant_id') || 'fredrik';
+    localStorage.setItem('consultant_id', id);
+
+    async function loadProfile() {
+      const tryUrls = [`./data/${id}.json`, './data/consultants.json'];
+      for (const u of tryUrls) {
+        try {
+          const res = await fetch(u);
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (Array.isArray(data.consultants)) {
+            const match = data.consultants.find(c=>c.id===id) || data.consultants[0];
+            return match;
+          }
+          return data;
+        } catch (e) { /* next */ }
+      }
+      return null;
+    }
+
+    function setProfile(p) {
+      if (!p) return;
+      $('myName').textContent = p.name || '';
+      $('myEmail').textContent = p.email || '';
+      $('myPhone').textContent = p.phone || '';
+      $('myCard').textContent  = p.card_link || '';
+      if (p.avatar) { $('myAvatar').style.backgroundImage = 'url(' + p.avatar + ')'; }
+      return p;
+    }
+
+    // Persist client fields locally
+    function loadClientFields() {
+      $('cPhone').value = localStorage.getItem('cPhone') || '';
+      $('cEmail').value = localStorage.getItem('cEmail') || '';
+    }
+    function saveClientFields() {
+      localStorage.setItem('cPhone', $('cPhone').value.trim());
+      localStorage.setItem('cEmail', $('cEmail').value.trim());
+    }
+    ['cPhone','cEmail'].forEach(x=>$(x).addEventListener('input', saveClientFields));
+
+    // Share helpers
+    function getCardURL() { return $('myCard').textContent.trim(); }
+    function waLink(phone, url) {
+      const num=(phone||'').replace(/\D/g,'');
+      const text='Hi, here is my digital business card: ' + url;
       return 'https://wa.me/' + (num?num:'') + '?text=' + enc(text);
-    };
-    const smsLink = (phone, url) => 'sms:' + (phone||'') + '?&body=' + enc('Here is my digital business card: ' + url);
-    const mailLink = (email, url, agent) => {
-      const subj = enc('My digital business card');
-      const body = enc('Hi,\n\nThis is my digital business card: ' + url + '\n\nBest, ' + (agent||''));
+    }
+    function smsLink(phone, url) { return 'sms:' + (phone||'') + '?&body=' + enc('Here is my digital business card: ' + url); }
+    function mailLink(email, url, agent) {
+      const subj=enc('My digital business card');
+      const body=enc('Hi,\n\nThis is my digital business card: ' + url + '\n\nBest, ' + (agent||''));
       return 'mailto:' + (email||'') + '?subject=' + subj + '&body=' + body;
-    };
+    }
 
-    $('sendWA').addEventListener('click', (e)=>{ e.currentTarget.href = waLink($('cPhone').value, getURL()); });
-    $('sendSMS').addEventListener('click', (e)=>{ e.currentTarget.href = smsLink($('cPhone').value, getURL()); });
-    $('sendEmail').addEventListener('click', (e)=>{ e.currentTarget.href = mailLink($('cEmail').value, getURL(), $('aName').value); });
-    $('copyLink').addEventListener('click', async ()=>{ try { await navigator.clipboard.writeText(getURL()); alert('Link copied'); } catch { alert('Copy failed'); } });
-    $('webShare').addEventListener('click', async ()=>{ if (navigator.share) { try { await navigator.share({ title: 'C21 Consultant Companion', text: 'My digital business card', url: getURL() }); } catch { } } else { alert('Native share not supported on this device.'); } });
+    // Buttons
+    $('sendWA').addEventListener('click', (e)=> e.currentTarget.href = waLink($('cPhone').value, getCardURL()));
+    $('sendSMS').addEventListener('click', (e)=> e.currentTarget.href = smsLink($('cPhone').value, getCardURL()));
+    $('sendEmail').addEventListener('click', (e)=> e.currentTarget.href = mailLink($('cEmail').value, getCardURL(), $('myName').textContent));
+    $('copyLink').addEventListener('click', async ()=>{ try { await navigator.clipboard.writeText(getCardURL()); alert('Link copied'); } catch { alert('Copy failed'); } });
 
-    // Pseudo QR for demo; replace with proper QR lib if desired
+    // Pseudo QR
     function drawFakeQR(text) {
       const el = $('qrcode'); el.innerHTML='';
       const c = document.createElement('canvas'); c.width=240; c.height=240; el.appendChild(c);
@@ -121,9 +168,17 @@
       const cells=33, size=Math.floor(240/cells);
       for (let y=0;y<cells;y++) for (let x=0;x<cells;x++) { if ((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size); }
     }
-    $('toggleQR').addEventListener('click', ()=>{ const w=$('qrWrap'); w.style.display=(w.style.display==='none'||!w.style.display)?'block':'none'; if (w.style.display==='block') drawFakeQR(getURL()); });
+    $('toggleQR').addEventListener('click', ()=>{ const w=$('qrWrap'); w.style.display=(w.style.display==='none'||!w.style.display)?'block':'none'; if (w.style.display==='block') drawFakeQR(getCardURL()); });
 
-    $('nfcWrite').addEventListener('click', async ()=>{ if ('NDEFReader' in window) { try { const ndef=new NDEFReader(); await ndef.write({ records:[{ recordType:'url', data:getURL() }] }); alert('NFC tag written.'); } catch(e) { alert('NFC write failed: '+e.message); } } else { alert('Web NFC not supported on this device/browser.'); } });
+    // Web NFC
+    $('nfcWrite').addEventListener('click', async ()=>{
+      if ('NDEFReader' in window) {
+        try { const ndef=new NDEFReader(); await ndef.write({ records:[{ recordType:'url', data:getCardURL() }] }); alert('NFC tag written.'); }
+        catch(e) { alert('NFC write failed: '+e.message); }
+      } else { alert('Web NFC not supported on this device/browser.'); }
+    });
+
+    (async ()=>{ loadClientFields(); const p = await loadProfile(); setProfile(p); })();
   </script>
 </body>
 </html>
