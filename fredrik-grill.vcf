@@ -1,1 +1,11 @@
-Placeholder for fredrik-grill.vcf
+BEGIN:VCARD
+VERSION:3.0
+N:Grill;Fredrik;;;
+FN:Fredrik Grill
+ORG:Century 21 Forever Homes
+TITLE:Broker / Owner – Century 21 Forever Homes
+TEL;TYPE=CELL,VOICE:+351925898231
+EMAIL;TYPE=INTERNET:f.grill@century21.pt
+URL:https://forever-homes.century21.pt
+ADR;TYPE=WORK:;;Estrada Do Farol 84, 8400-505, Carvoeiro;;;;
+END:VCARD
