@@ -1,0 +1,52 @@
+Consultant Test URLs:
+
+ - georgia-ellery
+   https://fgrill001.github.io/C21-contact/companion/?id=georgia-ellery&v=3
+
+ - filipe-rodrigues
+   https://fgrill001.github.io/C21-contact/companion/?id=filipe-rodrigues&v=3
+
+ - anabela-de-almeida-lindo
+   https://fgrill001.github.io/C21-contact/companion/?id=anabela-de-almeida-lindo&v=3
+
+ - doriza-linden
+   https://fgrill001.github.io/C21-contact/companion/?id=doriza-linden&v=3
+
+ - jacqueline-smith
+   https://fgrill001.github.io/C21-contact/companion/?id=jacqueline-smith&v=3
+
+ - ashley-ortego
+   https://fgrill001.github.io/C21-contact/companion/?id=ashley-ortego&v=3
+
+ - sandra-almeida-monteiro
+   https://fgrill001.github.io/C21-contact/companion/?id=sandra-almeida-monteiro&v=3
+
+ - j-lia-guerra
+   https://fgrill001.github.io/C21-contact/companion/?id=j-lia-guerra&v=3
+
+ - paula-mendes
+   https://fgrill001.github.io/C21-contact/companion/?id=paula-mendes&v=3
+
+ - stefanie-phu-lorenz
+   https://fgrill001.github.io/C21-contact/companion/?id=stefanie-phu-lorenz&v=3
+
+ - rozanne-van-lopik
+   https://fgrill001.github.io/C21-contact/companion/?id=rozanne-van-lopik&v=3
+
+ - century-21-forever-homes
+   https://fgrill001.github.io/C21-contact/companion/?id=century-21-forever-homes&v=3
+
+ - frank-remiatte
+   https://fgrill001.github.io/C21-contact/companion/?id=frank-remiatte&v=3
+
+ - carl-fredrik-claesson-grill
+   https://fgrill001.github.io/C21-contact/companion/?id=carl-fredrik-claesson-grill&v=3
+
+ - shubham-verma
+   https://fgrill001.github.io/C21-contact/companion/?id=shubham-verma&v=3
+
+ - gon-alo-alexandre-guerreiro-ri-o
+   https://fgrill001.github.io/C21-contact/companion/?id=gon-alo-alexandre-guerreiro-ri-o&v=3
+
+ - vitor-mendes
+   https://fgrill001.github.io/C21-contact/companion/?id=vitor-mendes&v=3
