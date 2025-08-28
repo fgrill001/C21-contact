@@ -18,7 +18,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .badge{width:48px;height:48px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:#111;font-weight:900;text-align:center;line-height:1}
 .section{padding:14px 16px;border-top:1px solid var(--border)}
 label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0f0f0f;color:var(--text);font-size:16px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0f0f0f;color:#var(--text);font-size:16px}
 .btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
 .btn + .btn{margin-top:10px}
 .primary{background:var(--gold);color:#111}
@@ -27,26 +27,24 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .footer{text-align:center;font-size:11px;color:#777;padding:12px}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-.ro{background:#101010;border:1px dashed #333;padding:10px;border-radius:10px}
 .banner{padding:10px 14px;background:#121212;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .banner b{color:var(--gold)}
 .linklike{background:transparent;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;font:inherit}
 .avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);background:#0f0f0f;background-size:cover;background-position:center;display:inline-grid;place-items:center;color:var(--gold);font-weight:800}
-
 .list{max-height:60vh;overflow:auto;border:1px solid #2a2a2a;border-radius:12px}
 .item{padding:12px 14px;border-bottom:1px solid #222;display:flex;gap:12px;align-items:center;cursor:pointer}
 .item:last-child{border-bottom:0}
 .item:hover{background:#1d1d1d}
 .thumb{width:40px;height:40px;border-radius:50%;background:#0f0f0f;border:1px solid #333;background-size:cover;background-position:center;display:grid;place-items:center;color:#BEAF87;font-weight:800}
-
 .empty{padding:10px;border:1px dashed #444;border-radius:10px;background:#101010;color:#bbb}
+#qrcode{background:#fff;padding:10px;border-radius:12px;display:inline-block}
 .hidden{display:none !important}
 </style>
 <script>
 /* Supabase live data (fill these); leave blank to use local JSON */
 window.CONFIG = {
   SUPABASE_URL: "https://sqkypvsorvhzpksswdus.supabase.co",
-  SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxa3lwdnNvcnZoenBrc3N3ZHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzU3ODIsImV4cCI6MjA3MTk1MTc4Mn0.DAIFf8mhhAFq6iUa5I-QyqP6-OPnM0PhX9uLkY-1JK4"
+  SUPABASE_ANON: "REPLACE_WITH_YOUR_ANON_PUBLIC_KEY"
 };
 </script>
 </head>
@@ -87,32 +85,12 @@ window.CONFIG = {
           <div class="avatar" id="myAvatar"><span id="init">--</span></div>
           <div>
             <div id="myName" style="font-weight:800;color:var(--gold)">My name</div>
-            <div id="myEmail" style="font-size:12px;color:var(--muted)">My email</div>
+            <div id="myEmail" style="font-size:12px;color:#9a9a9a">My email</div>
           </div>
         </div>
       </div>
 
-      <div class="section">
-        <label>My phone</label>
-        <div id="myPhone" class="ro mono">+351 ...</div>
-      </div>
-      <div class="section">
-        <label>My card link</label>
-        <div id="myCard" class="ro mono">https://...</div>
-        <div class="hint">Tip: this is the URL you share with clients.</div>
-      </div>
-
-      <!-- My Quick Link -->
-      <div class="section">
-        <label>My Quick Link</label>
-        <input id="myQuickLink" class="mono" readonly value="https://..." />
-        <div class="row" style="margin-top:10px">
-          <button class="btn secondary" id="copyQuick">📋 Copy My Link</button>
-          <button class="btn tertiary" id="qrQuick">🧾 Show QR</button>
-        </div>
-        <div class="hint">Use this URL/QR to pin your card app to the Home Screen directly.</div>
-      </div>
-
+      <!-- Moved up: Client fields -->
       <div class="section">
         <label>Client phone</label>
         <input id="cPhone" placeholder="+351 9xx ..." />
@@ -120,24 +98,20 @@ window.CONFIG = {
       <div class="section">
         <label>Client email</label>
         <input id="cEmail" placeholder="client@example.com" />
-        <div class="hint">These two fields save only on this device.</div>
+        <div class="hint">Saved locally on this device.</div>
+      </div>
+
+      <!-- QR always visible -->
+      <div class="section">
+        <label>Scan to save my card</label>
+        <div id="qrcode"></div>
       </div>
 
       <div class="section">
         <a class="btn primary" id="sendWA" target="_blank" rel="noopener">💬 Send WhatsApp</a>
         <a class="btn secondary" id="sendSMS">📱 Send SMS</a>
-        <a class="btn secondary" id="sendEmail">✉️ Send Email</a>
         <button class="btn secondary" id="copyLink">🔗 Copy Link</button>
-        <button class="btn tertiary" id="toggleQR">🧾 Show QR</button>
-      </div>
-
-      <div class="section hidden" id="qrWrap">
-        <div id="qrcode" style="background:#fff;padding:10px;border-radius:12px;display:inline-block"></div>
-      </div>
-
-      <div class="section">
         <button class="btn tertiary" id="nfcWrite">📶 Write NFC Tag</button>
-        <div class="hint">Android Chrome supports Web NFC. Tap an NFC tag to write your card URL.</div>
       </div>
 
       <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
@@ -153,7 +127,7 @@ const enc=s=>encodeURIComponent(s);
 const params = new URLSearchParams(location.search);
 const storageKey="consultant_id";
 
-const state = { list: [], selected: null };
+const state = { list: [], selected: null, cardUrl: "" };
 
 function showSelect(){ $("selectView").classList.remove("hidden"); $("shareView").classList.add("hidden"); }
 function showShare(){ $("selectView").classList.add("hidden"); $("shareView").classList.remove("hidden"); }
@@ -166,18 +140,13 @@ function saveClientFields(){
 
 function waLink(phone,url){ const num=(phone||"").replace(/\D/g,""); const text="Hi, here is my digital business card: " + url; return "https://wa.me/" + (num?num:"") + "?text=" + enc(text); }
 function smsLink(phone,url){ return "sms:" + (phone||"") + "?&body=" + enc("Here is my digital business card: " + url); }
-function mailLink(email,url,agent){ const subj=enc("My digital business card"); const body=enc("Hi,\n\nThis is my digital business card: " + url + "\n\nBest, " + (agent||"")); return "mailto:" + (email||"") + "?subject=" + subj + "&body=" + body; }
 
-$("sendWA").addEventListener("click", e=> e.currentTarget.href = waLink($("cPhone").value, $("myCard").textContent.trim()));
-$("sendSMS").addEventListener("click", e=> e.currentTarget.href = smsLink($("cPhone").value, $("myCard").textContent.trim()));
-$("sendEmail").addEventListener("click", e=> e.currentTarget.href = mailLink($("cEmail").value, $("myCard").textContent.trim(), $("myName").textContent));
-$("copyLink").addEventListener("click", async ()=>{ try{ await navigator.clipboard.writeText($("myCard").textContent.trim()); alert("Link copied"); }catch{ alert("Copy failed"); }});
-$("toggleQR").addEventListener("click", ()=>{ const wrap=$("qrWrap"); wrap.classList.toggle("hidden"); if(!wrap.classList.contains("hidden")) drawFakeQR($("myCard").textContent.trim()); });
-$("copyQuick").addEventListener("click", async ()=>{ try{ await navigator.clipboard.writeText($("myQuickLink").value); alert("Quick Link copied"); }catch{ alert("Copy failed"); }});
-$("qrQuick").addEventListener("click", ()=>{ $("qrWrap").classList.remove("hidden"); drawFakeQR($("myQuickLink").value); });
+$("sendWA").addEventListener("click", e=>{ e.currentTarget.href = waLink($("cPhone").value, state.cardUrl); });
+$("sendSMS").addEventListener("click", e=>{ e.currentTarget.href = smsLink($("cPhone").value, state.cardUrl); });
+$("copyLink").addEventListener("click", async ()=>{ try{ await navigator.clipboard.writeText(state.cardUrl); alert("Link copied"); }catch{ alert("Copy failed"); }});
 $("nfcWrite").addEventListener("click", async ()=>{
   if("NDEFReader" in window){
-    try{ const ndef=new NDEFReader(); await ndef.write({records:[{recordType:"url", data:$("myCard").textContent.trim()}]}); alert("NFC tag written."); }
+    try{ const ndef=new NDEFReader(); await ndef.write({records:[{recordType:"url", data:state.cardUrl}]}); alert("NFC tag written."); }
     catch(e){ alert("NFC write failed: " + e.message); }
   } else { alert("Web NFC not supported on this device/browser."); }
 });
@@ -193,8 +162,9 @@ function drawFakeQR(text){
   }
 }
 
+/* Buttons & controls */
 $("switchBtn").addEventListener("click", ()=>{ showSelect(); });
-$("resetBtn").addEventListener("click", ()=>{ localStorage.removeItem(storageKey); location.href="./index.html?v=14&reset=1"; });
+$("resetBtn").addEventListener("click", ()=>{ localStorage.removeItem(storageKey); location.href="./index.html?v=15&reset=1"; });
 
 /* ----- DATA LOADING ----- */
 async function fetchSupabaseAll(){
@@ -257,33 +227,25 @@ function fillShare(p){
   $("whoName").textContent = p.name||"";
   $("myName").textContent = p.name||"";
   $("myEmail").textContent = p.email||"";
-  $("myPhone").textContent = p.phone||"";
-  $("myCard").textContent  = p.card_link||"";
-  const base = location.origin + location.pathname.replace(/index\.html$/,'');
-  $("myQuickLink").value = `${base}?id=${encodeURIComponent(p.id||"")}`;
   const ini = (p.name||"").split(/\s+/).map(s=>s[0]).join("").slice(0,2).toUpperCase() || "--";
   $("init").textContent = ini;
   if(p.avatar){
-    let url = p.avatar;
-    if(!url.startsWith("http") && !url.startsWith("./")) url="./"+url;
-    $("myAvatar").style.backgroundImage = `url(${url})`;
-    $("init").style.visibility="hidden";
+    let url = p.avatar; if(!url.startsWith("http") && !url.startsWith("./")) url="./"+url;
+    $("myAvatar").style.backgroundImage = `url(${url})`; $("init").style.visibility="hidden";
   }else{
-    $("myAvatar").style.backgroundImage = "none";
-    $("init").style.visibility="visible";
+    $("myAvatar").style.backgroundImage = "none"; $("init").style.visibility="visible";
   }
+  // store URL & draw QR
+  state.cardUrl = p.card_link || "";
+  drawFakeQR(state.cardUrl);
 }
 async function selectById(id){
   let p = state.list.find(x=>x.id===id);
-  if(!p){
-    const all = await fetchLocalAll();
-    p = all.find(x=>x.id===id);
-  }
+  if(!p){ const all = await fetchLocalAll(); p = all.find(x=>x.id===id); }
   if(!p){ alert("Consultant not found."); showSelect(); return; }
-  fillShare(p);
   $("cPhone").value = localStorage.getItem("cPhone") || "";
   $("cEmail").value = localStorage.getItem("cEmail") || "";
-  showShare();
+  fillShare(p); showShare();
 }
 
 /* ----- INIT ----- */
