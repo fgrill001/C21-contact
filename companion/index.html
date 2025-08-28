@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <title>C21 Consultant Companion</title>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
@@ -8,47 +10,54 @@
 <style>
 :root{--gold:#BEAF87;--bg:#0f0f10;--panel:#161616;--border:#2a2a2a;--text:#fff;--muted:#9a9a9a}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:520px;margin:0 auto;padding:16px}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.35)}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.35)}
 .brandbar{display:flex;gap:12px;align-items:center;padding:14px 16px;background:#121212;border-bottom:1px solid var(--border)}
 .badge{width:48px;height:48px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:#111;font-weight:900;text-align:center;line-height:1}
 .section{padding:14px 16px;border-top:1px solid var(--border)}
 label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0f0f0f;color:var(--text)}
-.btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent;margin-top:10px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0f0f0f;color:var(--text);font-size:16px}
+.btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn + .btn{margin-top:10px}
 .primary{background:var(--gold);color:#111}
 .secondary{background:#232323;color:#fff;border-color:#333}
 .tertiary{background:#1b1b1b;color:#fff;border:1px dashed #333}
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .footer{text-align:center;font-size:11px;color:#777;padding:12px}
-.idbar{display:flex;gap:8px;align-items:center}
-.avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);background:#0f0f0f;background-size:cover;background-position:center}
+.row{display:flex;gap:10px}
+.row > *{flex:1}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
 .ro{background:#101010;border:1px dashed #333;padding:10px;border-radius:10px}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+
 .banner{padding:10px 14px;background:#121212;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .banner b{color:var(--gold)}
-.linklike{background:transparent;border:0;color:var(--gold);text-decoration:underline;cursor:pointer}
+.linklike{background:transparent;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;font:inherit}
 
-/* chooser modal */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px}
-.modal .box{max-width:520px;width:100%;background:#151515;border:1px solid #2a2a2a;border-radius:16px;box-shadow:0 12px 36px rgba(0,0,0,.55);padding:16px}
-.search{display:flex;gap:8px}
-.search input{flex:1}
-.list{max-height:50vh;overflow:auto;margin-top:10px;border:1px solid #2a2a2a;border-radius:12px}
+.avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);background:#0f0f0f;background-size:cover;background-position:center;display:inline-grid;place-items:center;color:var(--gold);font-weight:800}
+
+.list{max-height:55vh;overflow:auto;border:1px solid #2a2a2a;border-radius:12px}
 .item{padding:10px 12px;border-bottom:1px solid #222;display:flex;gap:10px;align-items:center;cursor:pointer}
 .item:last-child{border-bottom:0}
 .item:hover{background:#1d1d1d}
-.item .thumb{width:32px;height:32px;border-radius:50%;background:#0f0f0f;border:1px solid #333;background-size:cover;background-position:center}
+.thumb{width:36px;height:36px;border-radius:50%;background:#0f0f0f;border:1px solid #333;background-size:cover;background-position:center;display:grid;place-items:center;color:#BEAF87;font-weight:800}
+
+.empty{padding:10px;border:1px dashed #444;border-radius:10px;background:#101010;color:#bbb}
+
+.hidden{display:none !important}
 </style>
 <script>
-/* Set these to use Supabase (optional) */
-window.CONFIG = { SUPABASE_URL:"", SUPABASE_ANON:"" };
+/* Set these if you want Supabase live data; leave blank to use local JSON */
+window.CONFIG = {
+  SUPABASE_URL: "",      // e.g. "https://xxxx.supabase.co"
+  SUPABASE_ANON: ""      // public anon key
+};
 </script>
 </head>
 <body>
 <div class="wrap">
-  <div class="panel">
+  <div class="card">
     <div class="brandbar">
       <div class="badge">me@<br/>C21</div>
       <div>
@@ -57,233 +66,283 @@ window.CONFIG = { SUPABASE_URL:"", SUPABASE_ANON:"" };
       </div>
     </div>
 
-    <div id="whoBanner" class="banner" style="display:none">
-      <div>You're sharing: <b id="whoName">—</b></div>
-      <span>
-        <button class="linklike" id="resetBtn" title="Clear saved selection">Reset</button>
-        &nbsp;•&nbsp;
-        <button class="linklike" id="switchBtn">Switch consultant</button>
-      </span>
-    </div>
-
-    <div class="section">
-      <div class="idbar">
-        <div class="avatar" id="myAvatar"></div>
-        <div>
-          <div style="font-weight:800;color:var(--gold)" id="myName">My name</div>
-          <div style="font-size:12px;color:var(--muted)" id="myEmail">My email</div>
-        </div>
+    <!-- SELECT VIEW -->
+    <div id="selectView" class="section">
+      <h3 style="margin:0 0 10px">Select your profile</h3>
+      <div class="row">
+        <input id="search" placeholder="Type to filter by name or email"/>
+        <button id="useUrl" class="btn secondary" style="flex:0 0 auto;min-width:140px">Use ID in URL</button>
+      </div>
+      <div id="selectNote" class="hint">Data loads from Supabase (if configured), else from <code>data/consultants.json</code>.</div>
+      <div id="list" class="list" style="margin-top:10px"></div>
+      <div id="empty" class="empty hidden" style="margin-top:10px">
+        No consultants found.<br/>
+        • If you use Supabase, check your URL/key.<br/>
+        • Otherwise, make sure <code>companion/data/consultants.json</code> exists.<br/>
+        • You can also append <code>?id=&lt;consultantId&gt;</code> to the URL.
       </div>
     </div>
-    <div class="section">
-      <label>My phone</label>
-      <div id="myPhone" class="ro mono">+351 ...</div>
-    </div>
-    <div class="section">
-      <label>My card link</label>
-      <div id="myCard" class="ro mono">https://...</div>
-    </div>
-    <div class="section">
-      <label>Client phone</label>
-      <input id="cPhone" placeholder="+351 9xx ..." />
-    </div>
-    <div class="section">
-      <label>Client email</label>
-      <input id="cEmail" placeholder="client@example.com" />
-      <div class="hint">Fields are saved on this device only.</div>
-    </div>
-    <div class="section">
-      <a class="btn primary" id="sendWA" target="_blank" disabled>💬 Send WhatsApp</a>
-      <a class="btn secondary" id="sendSMS" disabled>📱 Send SMS</a>
-      <a class="btn secondary" id="sendEmail" disabled>✉️ Send Email</a>
-      <button class="btn secondary" id="copyLink" disabled>🔗 Copy Link</button>
-      <button class="btn tertiary" id="toggleQR" disabled>🧾 Show QR</button>
-    </div>
-    <div class="section" id="qrWrap" style="display:none">
-      <div id="qrcode" style="background:#fff;padding:10px;border-radius:12px;display:inline-block"></div>
-    </div>
-    <div class="section">
-      <button class="btn tertiary" id="nfcWrite" disabled>📶 Write NFC Tag</button>
-      <div class="hint">Android Chrome supports Web NFC. Tap an NFC tag to write your card URL.</div>
-    </div>
-    <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
-  </div>
-</div>
 
-<!-- Chooser modal -->
-<div class="modal" id="chooser">
-  <div class="box">
-    <h3 style="margin-top:0">Select your profile</h3>
-    <div class="search">
-      <input id="search" placeholder="Type to filter by name or email"/>
-      <button class="btn secondary" id="useUrl">Use ID in URL</button>
+    <!-- SHARE VIEW -->
+    <div id="shareView" class="hidden">
+      <div class="banner">
+        <div>You're sharing: <b id="whoName">—</b></div>
+        <span>
+          <button class="linklike" id="resetBtn" title="Clear saved selection">Reset</button>
+          &nbsp;•&nbsp;
+          <button class="linklike" id="switchBtn">Switch consultant</button>
+        </span>
+      </div>
+
+      <div class="section">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar" id="myAvatar"><span id="init">--</span></div>
+          <div>
+            <div id="myName" style="font-weight:800;color:var(--gold)">My name</div>
+            <div id="myEmail" style="font-size:12px;color:var(--muted)">My email</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>My phone</label>
+        <div id="myPhone" class="ro mono">+351 ...</div>
+      </div>
+      <div class="section">
+        <label>My card link</label>
+        <div id="myCard" class="ro mono">https://...</div>
+        <div class="hint">Tip: this is the URL you share with clients.</div>
+      </div>
+
+      <div class="section">
+        <label>Client phone</label>
+        <input id="cPhone" placeholder="+351 9xx ..." />
+      </div>
+      <div class="section">
+        <label>Client email</label>
+        <input id="cEmail" placeholder="client@example.com" />
+        <div class="hint">These two fields save only on this device.</div>
+      </div>
+
+      <div class="section">
+        <a class="btn primary" id="sendWA" target="_blank" rel="noopener">💬 Send WhatsApp</a>
+        <a class="btn secondary" id="sendSMS">📱 Send SMS</a>
+        <a class="btn secondary" id="sendEmail">✉️ Send Email</a>
+        <button class="btn secondary" id="copyLink">🔗 Copy Link</button>
+        <button class="btn tertiary" id="toggleQR">🧾 Show QR</button>
+      </div>
+
+      <div class="section hidden" id="qrWrap">
+        <div id="qrcode" style="background:#fff;padding:10px;border-radius:12px;display:inline-block"></div>
+      </div>
+
+      <div class="section">
+        <button class="btn tertiary" id="nfcWrite">📶 Write NFC Tag</button>
+        <div class="hint">Android Chrome supports Web NFC. Tap an NFC tag to write your card URL.</div>
+      </div>
+
+      <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
     </div>
-    <div class="list" id="list"></div>
-    <div class="hint" style="margin-top:8px">Tip: you'll stay signed in on this device. You can switch anytime.</div>
   </div>
 </div>
 
 <script>
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
+
 const $=id=>document.getElementById(id);
 const enc=s=>encodeURIComponent(s);
-const enable = (yes)=>["sendWA","sendSMS","sendEmail","copyLink","toggleQR","nfcWrite"].forEach(id=>{const el=$(id); if(el.tagName==="A"){ if(yes) el.removeAttribute("disabled"); else el.setAttribute("disabled",""); } else { el.disabled=!yes; }});
-
 const params = new URLSearchParams(location.search);
 const storageKey="consultant_id";
 
-function clearSelection(){
+const state = {
+  list: [],
+  selected: null
+};
+
+function initials(name){
+  const parts=(name||"").trim().split(/\s+/).filter(Boolean);
+  return (parts[0]?.[0]||"-") + (parts[1]?.[0]||"");
+}
+function e(tag,cls,html){ const n=document.createElement(tag); if(cls) n.className=cls; if(html!=null) n.innerHTML=html; return n; }
+
+function showSelect(){
+  $("selectView").classList.remove("hidden");
+  $("shareView").classList.add("hidden");
+}
+function showShare(){
+  $("selectView").classList.add("hidden");
+  $("shareView").classList.remove("hidden");
+}
+
+function saveClientFields(){
+  localStorage.setItem("cPhone", $("cPhone").value.trim());
+  localStorage.setItem("cEmail", $("cEmail").value.trim());
+}
+["cPhone","cEmail"].forEach(id=>$(id).addEventListener("input", saveClientFields));
+
+function waLink(phone,url){ const num=(phone||"").replace(/\D/g,""); const text="Hi, here is my digital business card: " + url; return "https://wa.me/" + (num?num:"") + "?text=" + enc(text); }
+function smsLink(phone,url){ return "sms:" + (phone||"") + "?&body=" + enc("Here is my digital business card: " + url); }
+function mailLink(email,url,agent){ const subj=enc("My digital business card"); const body=enc("Hi,\n\nThis is my digital business card: " + url + "\n\nBest, " + (agent||"")); return "mailto:" + (email||"") + "?subject=" + subj + "&body=" + body; }
+
+$("sendWA").addEventListener("click", e=> e.currentTarget.href = waLink($("cPhone").value, $("myCard").textContent.trim()));
+$("sendSMS").addEventListener("click", e=> e.currentTarget.href = smsLink($("cPhone").value, $("myCard").textContent.trim()));
+$("sendEmail").addEventListener("click", e=> e.currentTarget.href = mailLink($("cEmail").value, $("myCard").textContent.trim(), $("myName").textContent));
+$("copyLink").addEventListener("click", async ()=>{
+  try{ await navigator.clipboard.writeText($("myCard").textContent.trim()); alert("Link copied"); }catch{ alert("Copy failed"); }
+});
+$("toggleQR").addEventListener("click", ()=>{
+  const wrap=$("qrWrap");
+  wrap.classList.toggle("hidden");
+  if(!wrap.classList.contains("hidden")){
+    drawFakeQR($("myCard").textContent.trim());
+  }
+});
+$("nfcWrite").addEventListener("click", async ()=>{
+  if("NDEFReader" in window){
+    try{ const ndef=new NDEFReader(); await ndef.write({records:[{recordType:"url", data:$("myCard").textContent.trim()}]}); alert("NFC tag written."); }
+    catch(e){ alert("NFC write failed: " + e.message); }
+  } else {
+    alert("Web NFC not supported on this device/browser.");
+  }
+});
+
+function drawFakeQR(text){
+  const el=$("qrcode"); el.innerHTML="";
+  const c=document.createElement("canvas"); c.width=240; c.height=240; el.appendChild(c);
+  const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,240,240); ctx.fillStyle="#000";
+  let hash=0; for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0;
+  const cells=33, size=Math.floor(240/cells);
+  for(let y=0;y<cells;y++) for(let x=0;x<cells;x++){
+    if((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size);
+  }
+}
+
+$("switchBtn").addEventListener("click", ()=>{
+  state.selected=null;
+  showSelect();
+});
+$("resetBtn").addEventListener("click", ()=>{
   localStorage.removeItem(storageKey);
-  sessionStorage.removeItem("selected_id");
-}
-$("resetBtn").addEventListener("click", ()=>{ clearSelection(); location.href="./index.html?v=8&reset=1"; });
+  state.selected=null;
+  location.href="./index.html?v=9&reset=1";
+});
+$("useUrl").addEventListener("click", ()=>{
+  const id = params.get("id");
+  if(!id){ alert("No ?id= found in URL."); return; }
+  localStorage.setItem(storageKey, id);
+  selectById(id);
+});
 
-function currentId(){
-  if(params.get("reset")==="1"){ clearSelection(); }
-  const fromUrl = params.get("id");
-  if(fromUrl){ localStorage.setItem(storageKey, fromUrl); sessionStorage.setItem("selected_id", fromUrl); return fromUrl; }
-  const fromSession = sessionStorage.getItem("selected_id");
-  if(fromSession) return fromSession;
-  const fromLocal = localStorage.getItem(storageKey);
-  return fromLocal || "";
-}
-
-async function fetchSupabaseById(id){
-  const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
-  if(!SUPABASE_URL||!SUPABASE_ANON||!id) return null;
-  try{
-    const url = `${SUPABASE_URL}/rest/v1/consultants?id=eq.${encodeURIComponent(id)}&select=*`;
-    const res = await fetch(url, { headers: { apikey: SUPABASE_ANON, Authorization: "Bearer "+SUPABASE_ANON } });
-    if(!res.ok) return null;
-    const rows = await res.json();
-    return rows && rows[0] ? rows[0] : null;
-  }catch{ return null; }
-}
+/* ----- DATA LOADING ----- */
 async function fetchSupabaseAll(){
   const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
   if(!SUPABASE_URL||!SUPABASE_ANON) return [];
   try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/consultants?select=*`, { headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+SUPABASE_ANON}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/consultants?select=id,name,email,phone,card_link,avatar`,{
+      headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+SUPABASE_ANON}
+    });
     if(!res.ok) return [];
     return await res.json();
   }catch{ return []; }
 }
 async function fetchLocalAll(){
   try{
-    const idx = await fetch("./data/consultants.json");
-    if(!idx.ok) return [];
-    const j = await idx.json();
+    const r=await fetch("./data/consultants.json");
+    if(!r.ok) return [];
+    const j=await r.json();
     return j.consultants||[];
   }catch{ return []; }
 }
-async function fetchLocalById(id){
-  try{
-    const one = await fetch("./data/"+id+".json");
-    if(one.ok) return await one.json();
-  }catch{}
-  const all = await fetchLocalAll();
-  return all.find(c=>c.id===id)||null;
+async function loadList(){
+  let rows = await fetchSupabaseAll();
+  if(!rows.length) rows = await fetchLocalAll();
+  // Last-resort sample to avoid blank screens
+  if(!rows.length){
+    rows = [{
+      id:"fredrik",
+      name:"Fredrik Grill",
+      email:"f.grill@century21.pt",
+      phone:"+351 925 898 231",
+      card_link:"https://fgrill001.github.io/C21-contact/",
+      avatar:"./avatars/fredrik.jpg"
+    }];
+    $("selectNote").innerHTML = "Using local sample data — configure Supabase or provide data/consultants.json.";
+  }
+  // basic sort by name
+  rows.sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+  state.list = rows;
+  renderList(rows);
 }
-
-function setProfile(p){
-  $("myName").textContent = p.name || "";
-  $("myEmail").textContent = p.email || "";
-  $("myPhone").textContent = p.phone || "";
-  $("myCard").textContent  = p.card_link || "";
-  $("whoName").textContent = p.name || "";
-  $("whoBanner").style.display="flex";
-  if(p.avatar){ $("myAvatar").style.backgroundImage = "url(" + p.avatar + ")"; }
-  enable(true);
+function renderList(rows){
+  const list=$("list"); list.innerHTML="";
+  const empty=$("empty");
+  if(!rows.length){ empty.classList.remove("hidden"); return; } else { empty.classList.add("hidden"); }
+  rows.forEach(c=>{
+    const li=e("div","item");
+    const t=e("div","thumb");
+    if(c.avatar && !c.avatar.startsWith("http") && !c.avatar.startsWith("./")) c.avatar="./"+c.avatar;
+    if(c.avatar){ t.style.backgroundImage=`url(${c.avatar})`; t.textContent=""; }
+    else { t.textContent=initials(c.name||""); }
+    const info=e("div",null,`<div style="font-weight:700">${c.name||""}</div><div style="font-size:12px;color:#9a9a9a">${c.email||""}</div>`);
+    li.appendChild(t); li.appendChild(info);
+    li.addEventListener("click", ()=>{ localStorage.setItem(storageKey, c.id); selectById(c.id); });
+    list.appendChild(li);
+  });
 }
-
-function loadClientFields(){ $("cPhone").value = localStorage.getItem("cPhone") || ""; $("cEmail").value = localStorage.getItem("cEmail") || ""; }
-function saveClientFields(){ localStorage.setItem("cPhone", $("cPhone").value.trim()); localStorage.setItem("cEmail", $("cEmail").value.trim()); }
-["cPhone","cEmail"].forEach(x=>$(x).addEventListener("input", saveClientFields));
-
-function getCardURL(){ return $("myCard").textContent.trim(); }
-function waLink(phone,url){ const num=(phone||"").replace(/\D/g,""); const text="Hi, here is my digital business card: " + url; return "https://wa.me/" + (num?num:"") + "?text=" + enc(text); }
-function smsLink(phone,url){ return "sms:" + (phone||"") + "?&body=" + enc("Here is my digital business card: " + url); }
-function mailLink(email,url,agent){ const subj=enc("My digital business card"); const body=enc("Hi,\n\nThis is my digital business card: " + url + "\n\nBest, " + (agent||"")); return "mailto:" + (email||"") + "?subject=" + subj + "&body=" + body; }
-$("sendWA").addEventListener("click", e=> e.currentTarget.href = waLink($("cPhone").value, getCardURL()));
-$("sendSMS").addEventListener("click", e=> e.currentTarget.href = smsLink($("cPhone").value, getCardURL()));
-$("sendEmail").addEventListener("click", e=> e.currentTarget.href = mailLink($("cEmail").value, getCardURL(), $("myName").textContent));
-$("copyLink").addEventListener("click", async ()=>{ try{ await navigator.clipboard.writeText(getCardURL()); alert("Link copied"); }catch{ alert("Copy failed"); }});
-function drawFakeQR(text){ const el=$("qrcode"); el.innerHTML=""; const c=document.createElement("canvas"); c.width=240; c.height=240; el.appendChild(c); const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,240,240); ctx.fillStyle="#000"; let hash=0; for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0; const cells=33, size=Math.floor(240/cells); for(let y=0;y<cells;y++) for(let x=0;x<cells;x++){ if((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size); } }
-$("toggleQR").addEventListener("click", ()=>{ const w=$("qrWrap"); w.style.display=(w.style.display==="none"||!w.style.display)?"block":"none"; if(w.style.display==="block") drawFakeQR(getCardURL()); });
-
-$("switchBtn").addEventListener("click", ()=>openChooser());
-$("useUrl").addEventListener("click", ()=>{
-  const idFromUrl = (new URLSearchParams(location.search)).get("id");
-  if(!idFromUrl){ alert("No ?id= found in URL."); return; }
-  localStorage.setItem(storageKey, idFromUrl);
-  sessionStorage.setItem("selected_id", idFromUrl);
-  chooser.style.display="none";
-  init();
+$("search").addEventListener("input", ()=>{
+  const q=$("search").value.trim().toLowerCase();
+  const rows = !q ? state.list : state.list.filter(c=>(c.name||"").toLowerCase().includes(q) || (c.email||"").toLowerCase().includes(q));
+  renderList(rows);
 });
-$("nfcWrite").addEventListener("click", async ()=>{ if("NDEFReader" in window){ try{ const ndef=new NDEFReader(); await ndef.write({records:[{recordType:"url", data:getCardURL()}]}); alert("NFC tag written."); } catch(e){ alert("NFC write failed: " + e.message); } } else { alert("Web NFC not supported on this device/browser."); } });
 
-const chooser = document.getElementById("chooser");
-const list = document.getElementById("list");
-const search = document.getElementById("search");
-
-async function openChooser(){
-  let all = await fetchSupabaseAll();
-  if(!all.length){ all = await fetchLocalAll(); }
-  let filtered = all.slice(0);
-
-  const draw = () => {
-    list.innerHTML="";
-    filtered.forEach(c=>{
-      const div=document.createElement("div");
-      div.className="item";
-      const t=document.createElement("div");
-      t.className="thumb";
-      if(c.avatar) t.style.backgroundImage="url("+c.avatar+")";
-      const info=document.createElement("div");
-      info.innerHTML = `<div style="font-weight:700">${c.name||""}</div><div style="font-size:12px;color:#9a9a9a">${c.email||""}</div>`;
-      div.appendChild(t); div.appendChild(info);
-      div.addEventListener("click", ()=>{
-        localStorage.setItem(storageKey, c.id);
-        sessionStorage.setItem("selected_id", c.id);
-        chooser.style.display="none";
-        init();
-      });
-      list.appendChild(div);
-    });
-  };
-  draw();
-  search.oninput = ()=>{
-    const q=search.value.trim().toLowerCase();
-    filtered = !q ? all : all.filter(c=>(c.name||"").toLowerCase().includes(q) || (c.email||"").toLowerCase().includes(q));
-    draw();
-  };
-  chooser.style.display="flex";
-}
-
-async function loadProfileById(id){
-  let p = await fetchSupabaseById(id);
-  if(!p) p = await fetchLocalById(id);
-  return p;
-}
-
-async function init(){
-  enable(false);
-  const id = currentId();
-  if(!id){
-    openChooser(); return;
-  }
-  const p = await loadProfileById(id);
-  if(!p){
-    openChooser(); return;
-  }
-  // ready
-  $("whoBanner").style.display="flex";
+/* ----- PROFILE ----- */
+function fillShare(p){
+  state.selected = p;
   $("whoName").textContent = p.name||"";
-  setProfile(p);
-  // client fields last so UI is filled
+  $("myName").textContent = p.name||"";
+  $("myEmail").textContent = p.email||"";
+  $("myPhone").textContent = p.phone||"";
+  $("myCard").textContent  = p.card_link||"";
+  const ini = initials(p.name||"");
+  $("init").textContent = ini;
+  if(p.avatar){
+    let url = p.avatar;
+    if(!url.startsWith("http") && !url.startsWith("./")) url="./"+url;
+    $("myAvatar").style.backgroundImage = `url(${url})`;
+    $("init").style.visibility="hidden";
+  }else{
+    $("myAvatar").style.backgroundImage = "none";
+    $("init").style.visibility="visible";
+  }
+}
+async function selectById(id){
+  // find in current list; if not, try local
+  let p = state.list.find(x=>x.id===id);
+  if(!p){
+    const allLocal = await fetchLocalAll();
+    p = allLocal.find(x=>x.id===id);
+  }
+  if(!p){ alert("Consultant not found."); showSelect(); return; }
+  fillShare(p);
   $("cPhone").value = localStorage.getItem("cPhone") || "";
   $("cEmail").value = localStorage.getItem("cEmail") || "";
+  showShare();
 }
-init();
+
+/* ----- INIT ----- */
+(async function(){
+  // reset handling
+  if(params.get("reset")==="1"){ localStorage.removeItem(storageKey); }
+  await loadList();
+
+  const fromUrl = params.get("id");
+  const fromStorage = localStorage.getItem(storageKey);
+
+  if(fromUrl){ localStorage.setItem(storageKey, fromUrl); await selectById(fromUrl); return; }
+  if(fromStorage){ await selectById(fromStorage); return; }
+
+  showSelect();
+})();
 </script>
-</body></html>
+</body>
+</html>
