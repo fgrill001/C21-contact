@@ -1,4 +1,5 @@
-const CACHE = "c21-companion-v8"; // bump this when UI changes
+// bump CACHE to force updates when you change UI
+const CACHE = "c21-companion-v9";
 const ASSETS = [
   "./","./index.html","./manifest.webmanifest",
   "./icon-192.png","./icon-512.png","./apple-touch-icon.png",
