@@ -38,13 +38,14 @@ hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
 </style>
 
 <script>
-/* Supabase config (same project as Companion) */
+/* Supabase config */
 window.CONFIG = {
   SUPABASE_URL: "https://sqkypvsorvhzpksswdus.supabase.co",
   SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxa3lwdnNvcnZoenBrc3N3ZHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzU3ODIsImV4cCI6MjA3MTk1MTc4Mn0.DAIFf8mhhAFq6iUa5I-QyqP6-OPnM0PhX9uLkY-1JK4"
 };
-/* FH website (kept from earlier requirement) */
+/* FH website + office */
 const FH_WEBSITE = "https://www.century21.pt/agencias/forever-homes";
+const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+Carvoeiro,+Portugal";
 </script>
 </head>
 <body>
@@ -76,9 +77,9 @@ const FH_WEBSITE = "https://www.century21.pt/agencias/forever-homes";
       <a class="btn secondary" id="waBtn" target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="emailBtn">✉️ Email</a>
       <a class="btn tertiary" id="copyLinkBtn">🔗 Copy Link</a>
-<hr class="sep"/>
-<a class="btn secondary" id="fhSite" target="_blank" rel="noopener">🏠 Visit FH Website</a>
-<a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
+      <hr class="sep"/>
+      <a class="btn secondary" id="fhSite" target="_blank" rel="noopener">🏠 Visit FH Website</a>
+      <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
     </div>
 
     <div class="section center">
@@ -127,7 +128,7 @@ function makeVCard(p){
 
   let profile = null;
 
-  // 1) Supabase first
+  // Supabase first
   try{
     const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
     if(SUPABASE_URL && SUPABASE_ANON && id){
@@ -141,7 +142,7 @@ function makeVCard(p){
     }
   }catch(e){}
 
-  // 2) Fallback: local JSON at /data/consultants.json
+  // Fallback local
   if(!profile){
     try{
       const r = await fetch("./data/consultants.json");
@@ -152,7 +153,6 @@ function makeVCard(p){
     }catch(e){}
   }
 
-  // 3) Friendly error if not found
   if(!profile){
     document.body.innerHTML = `
       <div style="max-width:560px;margin:32px auto;padding:16px;color:#fff;font-family:system-ui">
@@ -162,14 +162,13 @@ function makeVCard(p){
     return;
   }
 
-  // Populate UI
+  // Populate
   document.title = `${profile.name || "Consultant"} — Digital Business Card`;
   $("titleLine").textContent = `${profile.name || "Consultant"} — Digital Business Card`;
   $("name").textContent = profile.name || "";
   $("email").textContent = profile.email || "";
   $("phone").textContent = profile.phone || "";
 
-  // Avatar (absolute URL or relative from site root)
   const av = (profile.avatar||"").trim();
   if(av){
     if(/^https?:\/\//i.test(av)){
@@ -185,23 +184,21 @@ function makeVCard(p){
     $("avatar").textContent = ini;
   }
 
-  // Personal page URL (this page)
   const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(profile.id);
   drawFakeQR($("qrcode"), myUrl);
 
-  // Buttons
-  $("fhSite").href = FH_WEBSITE;
+  $("fhSite").href   = FH_WEBSITE;
+  $("fhOffice").href = FH_OFFICE;
 
   $("callBtn").href = profile.phone ? `tel:${profile.phone.replace(/\s+/g,"")}` : "#";
-  $("smsBtn").href = profile.phone ? `sms:${profile.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
-  $("waBtn").href  = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
-  $("emailBtn").href = `mailto:${profile.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
+  $("smsBtn").href  = profile.phone ? `sms:${profile.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
+  $("waBtn").href   = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
+  $("emailBtn").href= `mailto:${profile.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
 
   $("copyLinkBtn").addEventListener("click", async ()=>{
     try{ await navigator.clipboard.writeText(myUrl); alert("Link copied"); }catch{ alert("Copy failed"); }
   });
 
-  // vCard download
   const vcf = makeVCard(profile);
   const blob = new Blob([vcf], {type:"text/vcard"});
   $("saveVCF").href = URL.createObjectURL(blob);
