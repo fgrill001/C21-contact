@@ -1,59 +1,211 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Fredrik Grill — Digital Business Card</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Digital Business Card</title>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
 <meta name="theme-color" content="#111111"/>
 <style>
-:root{--gold:#BEAF87;--bg:#0f0f10;--panel:#161616;--border:#2a2a2a;--text:#fff;--muted:#9a9a9a;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:grid;place-items:center;min-height:100vh;}
-.wrap{max-width:440px;width:100%;padding:16px;}
-.banner{background:#1b1b1c;border-radius:16px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.35);}
-.brandbar{background:#121212;display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
-.badge{width:48px;height:48px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:#111;font-weight:900;text-align:center;line-height:1;}
-.header{display:flex;gap:14px;padding:16px;background:var(--panel);}
-.avatar{width:72px;height:72px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;color:var(--gold);font-weight:800;}
-.actions{padding:14px 16px;display:grid;gap:10px;background:var(--panel);}
-a.btn{display:flex;justify-content:center;align-items:center;gap:6px;padding:12px;border-radius:12px;text-decoration:none;font-weight:700;}
-.primary{background:var(--gold);color:#111;}
-.secondary{background:#232323;color:#fff;border:1px solid #333;}
-.note{font-size:12px;color:var(--muted);padding:6px 0;}
-.footer{text-align:center;font-size:11px;color:#999;padding:10px;background:#121212;}
-.footer a{color:#999;text-decoration:none;border-bottom:1px dotted #555;}
+:root{--gold:#BEAF87;--bg:#0f0f10;--panel:#161616;--border:#2a2a2a;--text:#fff;--muted:#9a9a9a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.35)}
+.brandbar{display:flex;gap:12px;align-items:center;padding:14px 16px;background:#121212;border-bottom:1px solid var(--border)}
+.badge{width:48px;height:48px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:#111;font-weight:900;text-align:center;line-height:1}
+.section{padding:14px 16px;border-top:1px solid var(--border)}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.footer{text-align:center;font-size:11px;color:#777;padding:12px}
+.row{display:flex;gap:10px}
+.btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn + .btn{margin-top:10px}
+.primary{background:var(--gold);color:#111}
+.secondary{background:#232323;color:#fff;border-color:#333}
+.tertiary{background:#1b1b1b;color:#fff;border:1px dashed #333}
+
+.header{display:flex;gap:12px;align-items:center}
+.avatar{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);background:#0f0f0f;background-size:cover;background-position:center;display:inline-grid;place-items:center;color:var(--gold);font-weight:800;font-size:20px}
+.name{font-weight:900;color:var(--gold);font-size:20px}
+.small{font-size:13px;color:#9a9a9a}
+hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
+
+.center{display:flex;justify-content:center}
+.qr{background:#fff;padding:10px;border-radius:12px;display:inline-block}
+.ro{background:#101010;border:1px dashed #333;padding:10px;border-radius:10px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
 </style>
+
+<script>
+/* Supabase config (same project as Companion) */
+window.CONFIG = {
+  SUPABASE_URL: "https://sqkypvsorvhzpksswdus.supabase.co",
+  SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxa3lwdnNvcnZoenBrc3N3ZHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzU3ODIsImV4cCI6MjA3MTk1MTc4Mn0.DAIFf8mhhAFq6iUa5I-QyqP6-OPnM0PhX9uLkY-1JK4"
+};
+/* FH website (kept from earlier requirement) */
+const FH_WEBSITE = "https://www.century21.pt/agencias/forever-homes";
+</script>
 </head>
 <body>
-  <div class="wrap">
-    <section class="banner">
-      <div class="brandbar">
-        <div class="badge">Your<br/>C21</div>
-        <div>
-          <b>Century 21 Forever Homes</b><br/>
-          <span style="font-size:12px;color:var(--muted)">Algarve, Portugal</span>
-        </div>
+<div class="wrap">
+  <div class="card">
+    <div class="brandbar">
+      <div class="badge">Your<br/>C21</div>
+      <div>
+        <b id="titleLine">Digital Business Card</b>
+        <div class="small">Make Home Better • Powered by 2F</div>
       </div>
+    </div>
+
+    <div class="section">
       <div class="header">
-        <div class="avatar">FG</div>
+        <div id="avatar" class="avatar">--</div>
         <div>
-          <h2 style="margin:0;color:var(--gold);">Fredrik Grill</h2>
-          <div>Broker / Owner – Century 21 Forever Homes</div>
-          <div style="margin-top:4px;opacity:.9;">Make Home Better</div>
+          <div id="name" class="name">Consultant</div>
+          <div id="email" class="small">email@example.com</div>
+          <div id="phone" class="small">+351 …</div>
         </div>
       </div>
-      <div class="actions">
-        <a class="btn primary" href="./fredrik-grill.vcf" download>💾 Save Contact</a>
-        <a class="btn primary" href="https://wa.me/351925898231">💬 WhatsApp</a>
-        <a class="btn secondary" href="tel:+351925898231">📞 Call</a>
-        <a class="btn secondary" href="mailto:f.grill@century21.pt">✉️ Email</a>
-        <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=Estrada%20Do%20Farol%2084%2C%208400-505%2C%20Carvoeiro">📍 Estrada Do Farol 84, 8400-505, Carvoeiro</a>
-        <a class="btn secondary" href="https://www.century21.pt/agencias/forever-homes" target="_blank" rel="noopener">🌐 FH Website</a>
-        <div class="note">Tip: Save my contact so you can reach me quickly later.</div>
-      </div>
-      <div class="footer">© 2025 Century 21 Forever Homes • Powered by <a href="mailto:fredrik@twof.org">2F</a></div>
-    </section>
+    </div>
+
+    <div class="section">
+      <a class="btn primary" id="saveVCF" download="contact.vcf">🧾 Save Contact</a>
+      <a class="btn secondary" id="callBtn">📞 Call</a>
+      <a class="btn secondary" id="smsBtn">📱 Text</a>
+      <a class="btn secondary" id="waBtn" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="btn secondary" id="emailBtn">✉️ Email</a>
+      <a class="btn tertiary" id="copyLinkBtn">🔗 Copy Link</a>
+      <hr class="sep"/>
+      <a class="btn secondary" id="fhSite" target="_blank" rel="noopener">🏠 Visit FH Website</a>
+    </div>
+
+    <div class="section center">
+      <div id="qrcode" class="qr"></div>
+    </div>
+
+    <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
   </div>
-  <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js");}</script>
+</div>
+
+<script>
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
+
+const $=id=>document.getElementById(id);
+const enc=s=>encodeURIComponent(s);
+
+function drawFakeQR(el, text){
+  el.innerHTML="";
+  const c=document.createElement("canvas"); c.width=240; c.height=240; el.appendChild(c);
+  const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,240,240); ctx.fillStyle="#000";
+  let hash=0; for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0;
+  const cells=33, size=Math.floor(240/cells);
+  for(let y=0;y<cells;y++) for(let x=0;x<cells;x++){
+    if((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size);
+  }
+}
+
+function makeVCard(p){
+  const safe = (s)=> (s||"").replace(/\r?\n/g,"\\n");
+  const lines = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    `FN:${safe(p.name)}`,
+    p.email ? `EMAIL;TYPE=INTERNET:${safe(p.email)}` : null,
+    p.phone ? `TEL;TYPE=CELL:${safe(p.phone)}` : null,
+    "ORG:Century 21 Forever Homes",
+    FH_WEBSITE ? `URL:${FH_WEBSITE}` : null,
+    "END:VCARD"
+  ].filter(Boolean);
+  return lines.join("\r\n");
+}
+
+(async function init(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+
+  let profile = null;
+
+  // 1) Supabase first
+  try{
+    const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
+    if(SUPABASE_URL && SUPABASE_ANON && id){
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/consultants?id=eq.${encodeURIComponent(id)}&select=id,name,email,phone,card_link,avatar`, {
+        headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+SUPABASE_ANON}
+      });
+      if(res.ok){
+        const rows = await res.json();
+        profile = rows[0] || null;
+      }
+    }
+  }catch(e){}
+
+  // 2) Fallback: local JSON at /data/consultants.json
+  if(!profile){
+    try{
+      const r = await fetch("./data/consultants.json");
+      if(r.ok){
+        const j = await r.json();
+        profile = (j.consultants||[]).find(c=>c.id===id) || null;
+      }
+    }catch(e){}
+  }
+
+  // 3) Friendly error if not found
+  if(!profile){
+    document.body.innerHTML = `
+      <div style="max-width:560px;margin:32px auto;padding:16px;color:#fff;font-family:system-ui">
+        <h2>We couldn’t find that consultant</h2>
+        <p>Please ask your consultant for their personal card link again.</p>
+      </div>`;
+    return;
+  }
+
+  // Populate UI
+  document.title = `${profile.name || "Consultant"} — Digital Business Card`;
+  $("titleLine").textContent = `${profile.name || "Consultant"} — Digital Business Card`;
+  $("name").textContent = profile.name || "";
+  $("email").textContent = profile.email || "";
+  $("phone").textContent = profile.phone || "";
+
+  // Avatar (absolute URL or relative from site root)
+  const av = (profile.avatar||"").trim();
+  if(av){
+    if(/^https?:\/\//i.test(av)){
+      $("avatar").style.backgroundImage = `url(${av})`;
+      $("avatar").textContent = "";
+    }else{
+      const path = av.startsWith("./") ? av : ("./"+av);
+      $("avatar").style.backgroundImage = `url(${path})`;
+      $("avatar").textContent = "";
+    }
+  }else{
+    const ini = (profile.name||"").split(/\s+/).map(s=>s[0]).join("").slice(0,2).toUpperCase() || "--";
+    $("avatar").textContent = ini;
+  }
+
+  // Personal page URL (this page)
+  const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(profile.id);
+  drawFakeQR($("qrcode"), myUrl);
+
+  // Buttons
+  $("fhSite").href = FH_WEBSITE;
+
+  $("callBtn").href = profile.phone ? `tel:${profile.phone.replace(/\s+/g,"")}` : "#";
+  $("smsBtn").href = profile.phone ? `sms:${profile.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
+  $("waBtn").href  = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
+  $("emailBtn").href = `mailto:${profile.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
+
+  $("copyLinkBtn").addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText(myUrl); alert("Link copied"); }catch{ alert("Copy failed"); }
+  });
+
+  // vCard download
+  const vcf = makeVCard(profile);
+  const blob = new Blob([vcf], {type:"text/vcard"});
+  $("saveVCF").href = URL.createObjectURL(blob);
+  $("saveVCF").download = (profile.name || "contact").replace(/\s+/g,"_") + ".vcf";
+})();
+</script>
 </body>
 </html>
