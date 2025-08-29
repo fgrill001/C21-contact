@@ -71,15 +71,16 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
     </div>
 
     <div class="section">
-      <a class="btn primary" id="saveVCF" download="contact.vcf">🧾 Save Contact</a>
+      <!-- Reordered buttons -->
+      <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
+      <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="callBtn">📞 Call</a>
       <a class="btn secondary" id="smsBtn">📱 Text</a>
-      <a class="btn secondary" id="waBtn" target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="emailBtn">✉️ Email</a>
-      <a class="btn tertiary" id="copyLinkBtn">🔗 Copy Link</a>
+      <a class="btn tertiary"  id="copyLinkBtn">🔗 Copy Link</a>
       <hr class="sep"/>
-      <a class="btn secondary" id="fhSite" target="_blank" rel="noopener">🏠 Visit FH Website</a>
       <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
+      <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
     </div>
 
     <div class="section center">
@@ -187,18 +188,21 @@ function makeVCard(p){
   const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(profile.id);
   drawFakeQR($("qrcode"), myUrl);
 
+  // External links
   $("fhSite").href   = FH_WEBSITE;
   $("fhOffice").href = FH_OFFICE;
 
+  // Actions
+  $("waBtn").href   = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
   $("callBtn").href = profile.phone ? `tel:${profile.phone.replace(/\s+/g,"")}` : "#";
   $("smsBtn").href  = profile.phone ? `sms:${profile.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
-  $("waBtn").href   = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
   $("emailBtn").href= `mailto:${profile.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
 
   $("copyLinkBtn").addEventListener("click", async ()=>{
     try{ await navigator.clipboard.writeText(myUrl); alert("Link copied"); }catch{ alert("Copy failed"); }
   });
 
+  // vCard
   const vcf = makeVCard(profile);
   const blob = new Blob([vcf], {type:"text/vcard"});
   $("saveVCF").href = URL.createObjectURL(blob);
