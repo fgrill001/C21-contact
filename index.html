@@ -31,10 +31,6 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .name{font-weight:900;color:var(--gold);font-size:20px}
 .small{font-size:13px;color:#9a9a9a}
 hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
-
-.center{display:flex;justify-content:center}
-.qr{background:#fff;padding:10px;border-radius:12px;display:inline-block}
-.ro{background:#101010;border:1px dashed #333;padding:10px;border-radius:10px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
 </style>
 
 <script>
@@ -71,7 +67,7 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
     </div>
 
     <div class="section">
-      <!-- Reordered buttons -->
+      <!-- Buttons reordered -->
       <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
       <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="callBtn">📞 Call</a>
@@ -83,10 +79,6 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
       <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
     </div>
 
-    <div class="section center">
-      <div id="qrcode" class="qr"></div>
-    </div>
-
     <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
   </div>
 </div>
@@ -96,17 +88,6 @@ if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
 
 const $=id=>document.getElementById(id);
 const enc=s=>encodeURIComponent(s);
-
-function drawFakeQR(el, text){
-  el.innerHTML="";
-  const c=document.createElement("canvas"); c.width=240; c.height=240; el.appendChild(c);
-  const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,240,240); ctx.fillStyle="#000";
-  let hash=0; for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0;
-  const cells=33, size=Math.floor(240/cells);
-  for(let y=0;y<cells;y++) for(let x=0;x<cells;x++){
-    if((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size);
-  }
-}
 
 function makeVCard(p){
   const safe = (s)=> (s||"").replace(/\r?\n/g,"\\n");
@@ -186,7 +167,6 @@ function makeVCard(p){
   }
 
   const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(profile.id);
-  drawFakeQR($("qrcode"), myUrl);
 
   // External links
   $("fhSite").href   = FH_WEBSITE;
