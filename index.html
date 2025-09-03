@@ -20,7 +20,21 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .footer{text-align:center;font-size:11px;color:#777;padding:12px}
 .row{display:flex;gap:10px}
-.btn{flex:1;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn {
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:12px;
+  border-radius:12px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  border:1px solid transparent;
+  line-height:1.2;        /* consistent vertical sizing */
+  white-space:nowrap;     /* prevent text wrapping */
+}
 .btn + .btn{margin-top:10px}
 .row{display:flex;gap:10px;margin-top:10px} /* add margin here */
 .primary{background:var(--gold);color:#111}
