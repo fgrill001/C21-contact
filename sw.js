@@ -1,4 +1,4 @@
-const CACHE = "c21-client-v9";
+const CACHE = "c21-client-v11";
 const ASSETS = [
   "./","./index.html","./manifest.webmanifest",
   "./icon-192.png","./icon-512.png","./apple-touch-icon.png",
