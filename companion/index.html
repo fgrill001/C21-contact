@@ -37,12 +37,9 @@ input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);
 .item:hover{background:#1d1d1d}
 .thumb{width:40px;height:40px;border-radius:50%;background:#0f0f0f;border:1px solid #333;background-size:cover;background-position:center;display:grid;place-items:center;color:#BEAF87;font-weight:800}
 .empty{padding:10px;border:1px dashed #444;border-radius:10px;background:#101010;color:#bbb}
-#qrCenter{display:flex;justify-content:center}
-#qrcode{background:#fff;padding:10px;border-radius:12px;display:inline-block}
 .hidden{display:none !important}
 </style>
 <script>
-/* Supabase live data */
 window.CONFIG = {
   SUPABASE_URL: "https://sqkypvsorvhzpksswdus.supabase.co",
   SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxa3lwdnNvcnZoenBrc3N3ZHVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzU3ODIsImV4cCI6MjA3MTk1MTc4Mn0.DAIFf8mhhAFq6iUa5I-QyqP6-OPnM0PhX9uLkY-1JK4"
@@ -74,24 +71,21 @@ window.CONFIG = {
     <div id="shareView" class="hidden">
       <div class="banner"><div>You're sharing</div></div>
 
-      <!-- Header block with avatar + full details -->
       <div class="section">
         <div style="display:flex;gap:12px;align-items:center">
           <div class="avatar" id="myAvatar"><span id="init">--</span></div>
           <div>
-            <div id="myName" style="font-weight:800;color:var(--gold)">Name</div>
-            <div id="myEmail" style="font-size:12px;color:#9a9a9a">Email</div>
+            <div id="myName" style="font-weight:800;color:var(--gold)">My name</div>
+            <div id="myEmail" style="font-size:12px;color:#9a9a9a">My email</div>
             <div id="myPhone" style="font-size:12px;color:#9a9a9a">+351 ...</div>
           </div>
         </div>
       </div>
 
-      <!-- Switch consultant button (moved here) -->
       <div class="section">
         <button class="btn tertiary" id="switchBtn">🔁 Switch consultant</button>
       </div>
 
-      <!-- Client fields first -->
       <div class="section">
         <label>Client phone</label>
         <input id="cPhone" placeholder="+351 9xx ..." />
@@ -147,17 +141,6 @@ $("nfcWrite").addEventListener("click", async ()=>{
 });
 
 $("switchBtn").addEventListener("click", ()=>{ showSelect(); });
-
-function drawFakeQR(text){
-  const el=$("qrcode"); el.innerHTML="";
-  const c=document.createElement("canvas"); c.width=240; c.height=240; el.appendChild(c);
-  const ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,240,240); ctx.fillStyle="#000";
-  let hash=0; for(let i=0;i<text.length;i++) hash=(hash*31+text.charCodeAt(i))>>>0;
-  const cells=33, size=Math.floor(240/cells);
-  for(let y=0;y<cells;y++) for(let x=0;x<cells;x++){
-    if((hash>>((x*y)%31))&1) ctx.fillRect(x*size,y*size,size,size);
-  }
-}
 
 /* ----- DATA LOADING ----- */
 async function fetchSupabaseAll(){
@@ -229,7 +212,6 @@ function fillShare(p){
     $("myAvatar").style.backgroundImage = "none"; $("init").style.visibility="visible";
   }
   state.cardUrl = p.card_link || "";
-  drawFakeQR(state.cardUrl);
 }
 async function selectById(id){
   let p = state.list.find(x=>x.id===id);
