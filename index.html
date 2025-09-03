@@ -20,7 +20,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .footer{text-align:center;font-size:11px;color:#777;padding:12px}
 .row{display:flex;gap:10px}
-.btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn{flex:1;display:flex;justify-content:center;align-items:center;gap:8px;padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent}
 .btn + .btn{margin-top:10px}
 .primary{background:var(--gold);color:#111}
 .secondary{background:#232323;color:#fff;border-color:#333}
@@ -67,13 +67,15 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
     </div>
 
     <div class="section">
-      <!-- Buttons reordered -->
+      <!-- Reordered buttons -->
       <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
       <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="callBtn">📞 Call</a>
       <a class="btn secondary" id="smsBtn">📱 Text</a>
-      <a class="btn secondary" id="emailBtn">✉️ Email</a>
-      <a class="btn tertiary"  id="copyLinkBtn">🔗 Copy Link</a>
+      <div class="row">
+        <a class="btn secondary" id="emailBtn">✉️ Email</a>
+        <a class="btn tertiary"  id="copyLinkBtn">🔗 Copy Link</a>
+      </div>
       <hr class="sep"/>
       <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
       <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
