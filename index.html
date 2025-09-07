@@ -19,24 +19,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .section{padding:14px 16px;border-top:1px solid var(--border)}
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .footer{text-align:center;font-size:11px;color:#777;padding:12px}
-.row{display:flex;gap:10px}
-.btn {
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-  padding:12px;
-  border-radius:12px;
-  font-weight:700;
-  text-decoration:none;
-  cursor:pointer;
-  border:1px solid transparent;
-  line-height:1.2;        /* consistent vertical sizing */
-  white-space:nowrap;     /* prevent text wrapping */
+.row{display:flex;gap:10px;margin-top:10px}
+.btn{
+  flex:1;display:flex;justify-content:center;align-items:center;gap:8px;
+  padding:12px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;
+  border:1px solid transparent;line-height:1.2;white-space:nowrap
 }
 .btn + .btn{margin-top:10px}
-.row{display:flex;gap:10px;margin-top:10px} /* add margin here */
 .primary{background:var(--gold);color:#111}
 .secondary{background:#232323;color:#fff;border-color:#333}
 .tertiary{background:#1b1b1b;color:#fff;border:1px dashed #333}
@@ -82,7 +71,7 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
     </div>
 
     <div class="section">
-      <!-- Reordered buttons -->
+      <!-- Order you chose -->
       <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
       <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
       <a class="btn secondary" id="callBtn">📞 Call</a>
@@ -95,13 +84,16 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
       <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
       <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
     </div>
-<div class="section">
-  <div class="hint">
-    To save this card: <br/>
-    📱 iPhone — hit Share → Add to Home Screen <br/>
-    🤖 Android — hit ⋮ → Add to Home screen
-  </div>
-</div>
+
+    <!-- Two-line hint -->
+    <div class="section">
+      <div class="hint">
+        To save this card: <br/>
+        📱 iPhone — hit Share → Add to Home Screen <br/>
+        🤖 Android — hit ⋮ → Add to Home screen
+      </div>
+    </div>
+
     <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
   </div>
 </div>
@@ -111,6 +103,9 @@ if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
 
 const $=id=>document.getElementById(id);
 const enc=s=>encodeURIComponent(s);
+
+/* Remember last consultant so PWA launches to the right card even without ?id */
+const LAST_ID_KEY = "client_last_id";
 
 function makeVCard(p){
   const safe = (s)=> (s||"").replace(/\r?\n/g,"\\n");
@@ -129,7 +124,9 @@ function makeVCard(p){
 
 (async function init(){
   const params = new URLSearchParams(location.search);
-  const id = params.get("id");
+  const incomingId = params.get("id");
+  if (incomingId) localStorage.setItem(LAST_ID_KEY, incomingId);
+  const id = incomingId || localStorage.getItem(LAST_ID_KEY);
 
   let profile = null;
 
@@ -148,7 +145,7 @@ function makeVCard(p){
   }catch(e){}
 
   // Fallback local
-  if(!profile){
+  if(!profile && id){
     try{
       const r = await fetch("./data/consultants.json");
       if(r.ok){
@@ -167,7 +164,7 @@ function makeVCard(p){
     return;
   }
 
-  // Populate
+  // Populate UI
   document.title = `${profile.name || "Consultant"} — Digital Business Card`;
   $("titleLine").textContent = `${profile.name || "Consultant"} — Digital Business Card`;
   $("name").textContent = profile.name || "";
