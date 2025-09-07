@@ -35,6 +35,14 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .name{font-weight:900;color:var(--gold);font-size:20px}
 .small{font-size:13px;color:#9a9a9a}
 hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
+
+/* Minimal chooser */
+.list{max-height:60vh;overflow:auto;border:1px solid #2a2a2a;border-radius:12px}
+.item{padding:12px 14px;border-bottom:1px solid #222;display:flex;gap:12px;align-items:center;cursor:pointer}
+.item:last-child{border-bottom:0}
+.item:hover{background:#1d1d1d}
+.thumb{width:40px;height:40px;border-radius:50%;background:#0f0f0f;border:1px solid #333;background-size:cover;background-position:center;display:grid;place-items:center;color:#BEAF87;font-weight:800}
+.hidden{display:none !important}
 </style>
 
 <script>
@@ -46,6 +54,9 @@ window.CONFIG = {
 /* FH website + office */
 const FH_WEBSITE = "https://www.century21.pt/agencias/forever-homes";
 const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+Carvoeiro,+Portugal";
+
+/* Storage key to remember last consultant */
+const LAST_ID_KEY = "client_last_id";
 </script>
 </head>
 <body>
@@ -59,42 +70,50 @@ const FH_OFFICE  = "https://www.google.com/maps?q=Estrada+Do+Farol+84,+8400-505+
       </div>
     </div>
 
-    <div class="section">
-      <div class="header">
-        <div id="avatar" class="avatar">--</div>
-        <div>
-          <div id="name" class="name">Consultant</div>
-          <div id="email" class="small">email@example.com</div>
-          <div id="phone" class="small">+351 …</div>
+    <!-- CHOOSER (only shows when no id known) -->
+    <div id="chooseView" class="section hidden">
+      <h3 style="margin:0 0 10px">Select your consultant</h3>
+      <div id="list" class="list"></div>
+      <div class="hint" style="margin-top:10px">Tip: next time, save this to your Home Screen after opening your consultant’s card.</div>
+    </div>
+
+    <!-- CARD VIEW -->
+    <div id="cardView" class="hidden">
+      <div class="section">
+        <div class="header">
+          <div id="avatar" class="avatar">--</div>
+          <div>
+            <div id="name" class="name">Consultant</div>
+            <div id="email" class="small">email@example.com</div>
+            <div id="phone" class="small">+351 …</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <!-- Order you chose -->
-      <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
-      <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="btn secondary" id="callBtn">📞 Call</a>
-      <a class="btn secondary" id="smsBtn">📱 Text</a>
-      <div class="row">
-        <a class="btn secondary" id="emailBtn">✉️ Email</a>
-        <a class="btn tertiary"  id="copyLinkBtn">🔗 Copy Link</a>
+      <div class="section">
+        <a class="btn primary"   id="saveVCF"  download="contact.vcf">🧾 Save Contact</a>
+        <a class="btn secondary" id="waBtn"    target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a class="btn secondary" id="callBtn">📞 Call</a>
+        <a class="btn secondary" id="smsBtn">📱 Text</a>
+        <div class="row">
+          <a class="btn secondary" id="emailBtn">✉️ Email</a>
+          <a class="btn tertiary"  id="copyLinkBtn">🔗 Copy Link</a>
+        </div>
+        <hr class="sep"/>
+        <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
+        <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
       </div>
-      <hr class="sep"/>
-      <a class="btn secondary" id="fhOffice" target="_blank" rel="noopener">📍 Find FH Office</a>
-      <a class="btn secondary" id="fhSite"   target="_blank" rel="noopener">🏠 Visit FH Website</a>
-    </div>
 
-    <!-- Two-line hint -->
-    <div class="section">
-      <div class="hint">
-        To save this card: <br/>
-        📱 iPhone — hit Share → Add to Home Screen <br/>
-        🤖 Android — hit ⋮ → Add to Home screen
+      <div class="section">
+        <div class="hint">
+          To save this card: <br/>
+          📱 iPhone — hit Share → Add to Home Screen <br/>
+          🤖 Android — hit ⋮ → Add to Home screen
+        </div>
       </div>
-    </div>
 
-    <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
+      <div class="footer">© 2025 Century 21 Forever Homes • Powered by 2F</div>
+    </div>
   </div>
 </div>
 
@@ -104,74 +123,62 @@ if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js"); }
 const $=id=>document.getElementById(id);
 const enc=s=>encodeURIComponent(s);
 
-/* Remember last consultant so PWA launches to the right card even without ?id */
-const LAST_ID_KEY = "client_last_id";
+function showChoose(){ $("chooseView").classList.remove("hidden"); $("cardView").classList.add("hidden"); }
+function showCard(){ $("chooseView").classList.add("hidden"); $("cardView").classList.remove("hidden"); }
 
-function makeVCard(p){
-  const safe = (s)=> (s||"").replace(/\r?\n/g,"\\n");
-  const lines = [
-    "BEGIN:VCARD",
-    "VERSION:3.0",
-    `FN:${safe(p.name)}`,
-    p.email ? `EMAIL;TYPE=INTERNET:${safe(p.email)}` : null,
-    p.phone ? `TEL;TYPE=CELL:${safe(p.phone)}` : null,
-    "ORG:Century 21 Forever Homes",
-    FH_WEBSITE ? `URL:${FH_WEBSITE}` : null,
-    "END:VCARD"
-  ].filter(Boolean);
-  return lines.join("\r\n");
+async function fetchSupabaseAll(){
+  const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
+  if(!SUPABASE_URL||!SUPABASE_ANON) return [];
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/consultants?select=id,name,email,phone,card_link,avatar`,{
+      headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+SUPABASE_ANON}
+    });
+    if(!res.ok) return [];
+    return await res.json();
+  }catch{ return []; }
+}
+async function fetchLocalAll(){
+  try{
+    const r=await fetch("./data/consultants.json");
+    if(!r.ok) return [];
+    const j=await r.json();
+    return j.consultants||[];
+  }catch{ return []; }
 }
 
-(async function init(){
-  const params = new URLSearchParams(location.search);
-  const incomingId = params.get("id");
-  if (incomingId) localStorage.setItem(LAST_ID_KEY, incomingId);
-  const id = incomingId || localStorage.getItem(LAST_ID_KEY);
-
-  let profile = null;
-
+async function loadProfileById(id){
   // Supabase first
   try{
     const {SUPABASE_URL,SUPABASE_ANON}=window.CONFIG||{};
     if(SUPABASE_URL && SUPABASE_ANON && id){
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/consultants?id=eq.${encodeURIComponent(id)}&select=id,name,email,phone,card_link,avatar`, {
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/consultants?id=eq.${encodeURIComponent(id)}&select=id,name,email,phone,card_link,avatar`,{
         headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+SUPABASE_ANON}
       });
       if(res.ok){
-        const rows = await res.json();
-        profile = rows[0] || null;
+        const rows=await res.json();
+        if(rows[0]) return rows[0];
       }
     }
   }catch(e){}
-
   // Fallback local
-  if(!profile && id){
-    try{
-      const r = await fetch("./data/consultants.json");
-      if(r.ok){
-        const j = await r.json();
-        profile = (j.consultants||[]).find(c=>c.id===id) || null;
-      }
-    }catch(e){}
-  }
+  try{
+    const r=await fetch("./data/consultants.json");
+    if(r.ok){
+      const j=await r.json();
+      return (j.consultants||[]).find(c=>c.id===id) || null;
+    }
+  }catch(e){}
+  return null;
+}
 
-  if(!profile){
-    document.body.innerHTML = `
-      <div style="max-width:560px;margin:32px auto;padding:16px;color:#fff;font-family:system-ui">
-        <h2>We couldn’t find that consultant</h2>
-        <p>Please ask your consultant for their personal card link again.</p>
-      </div>`;
-    return;
-  }
+function renderProfile(p){
+  document.title = `${p.name || "Consultant"} — Digital Business Card`;
+  $("titleLine").textContent = `${p.name || "Consultant"} — Digital Business Card`;
+  $("name").textContent = p.name || "";
+  $("email").textContent = p.email || "";
+  $("phone").textContent = p.phone || "";
 
-  // Populate UI
-  document.title = `${profile.name || "Consultant"} — Digital Business Card`;
-  $("titleLine").textContent = `${profile.name || "Consultant"} — Digital Business Card`;
-  $("name").textContent = profile.name || "";
-  $("email").textContent = profile.email || "";
-  $("phone").textContent = profile.phone || "";
-
-  const av = (profile.avatar||"").trim();
+  const av = (p.avatar||"").trim();
   if(av){
     if(/^https?:\/\//i.test(av)){
       $("avatar").style.backgroundImage = `url(${av})`;
@@ -182,31 +189,85 @@ function makeVCard(p){
       $("avatar").textContent = "";
     }
   }else{
-    const ini = (profile.name||"").split(/\s+/).map(s=>s[0]).join("").slice(0,2).toUpperCase() || "--";
+    const ini = (p.name||"").split(/\s+/).map(s=>s[0]).join("").slice(0,2).toUpperCase() || "--";
     $("avatar").textContent = ini;
   }
 
-  const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(profile.id);
+  const myUrl = location.origin + location.pathname + "?id=" + encodeURIComponent(p.id);
 
-  // External links
   $("fhSite").href   = FH_WEBSITE;
   $("fhOffice").href = FH_OFFICE;
 
-  // Actions
-  $("waBtn").href   = `https://wa.me/${(profile.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
-  $("callBtn").href = profile.phone ? `tel:${profile.phone.replace(/\s+/g,"")}` : "#";
-  $("smsBtn").href  = profile.phone ? `sms:${profile.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
-  $("emailBtn").href= `mailto:${profile.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
+  $("waBtn").href   = `https://wa.me/${(p.phone||"").replace(/\D/g,"")}?text=${enc("Here is my digital business card: "+myUrl)}`;
+  $("callBtn").href = p.phone ? `tel:${p.phone.replace(/\s+/g,"")}` : "#";
+  $("smsBtn").href  = p.phone ? `sms:${p.phone.replace(/\s+/g,"")}?&body=${enc("Here is my digital business card: "+myUrl)}` : "#";
+  $("emailBtn").href= `mailto:${p.email||""}?subject=${enc("My digital business card")}&body=${enc("Hi,\n\nHere is my digital business card: "+myUrl)}`;
 
-  $("copyLinkBtn").addEventListener("click", async ()=>{
-    try{ await navigator.clipboard.writeText(myUrl); alert("Link copied"); }catch{ alert("Copy failed"); }
-  });
+  $("copyLinkBtn").onclick = async ()=>{ try{ await navigator.clipboard.writeText(myUrl); alert("Link copied"); }catch{ alert("Copy failed"); } };
 
-  // vCard
-  const vcf = makeVCard(profile);
+  const vcf = [
+    "BEGIN:VCARD","VERSION:3.0",
+    `FN:${(p.name||"").replace(/\r?\n/g,"\\n")}`,
+    p.email ? `EMAIL;TYPE=INTERNET:${p.email}` : null,
+    p.phone ? `TEL;TYPE=CELL:${p.phone}` : null,
+    "ORG:Century 21 Forever Homes",
+    FH_WEBSITE ? `URL:${FH_WEBSITE}` : null,
+    "END:VCARD"
+  ].filter(Boolean).join("\r\n");
   const blob = new Blob([vcf], {type:"text/vcard"});
   $("saveVCF").href = URL.createObjectURL(blob);
-  $("saveVCF").download = (profile.name || "contact").replace(/\s+/g,"_") + ".vcf";
+  $("saveVCF").download = (p.name || "contact").replace(/\s+/g,"_") + ".vcf";
+}
+
+async function renderChooser(){
+  // Load list from Supabase or local
+  let rows = await fetchSupabaseAll();
+  if(!rows.length) rows = await fetchLocalAll();
+  rows.sort((a,b)=> (a.name||"").localeCompare(b.name||""));
+
+  const list=$("list"); list.innerHTML="";
+  rows.forEach(c=>{
+    const li=document.createElement("div"); li.className="item";
+    const t=document.createElement("div"); t.className="thumb";
+    if(c.avatar && !c.avatar.startsWith("http") && !c.avatar.startsWith("./")) c.avatar="./"+c.avatar;
+    if(c.avatar){ t.style.backgroundImage=`url(${c.avatar})`; t.textContent=""; }
+    else { t.textContent=(c.name||"--").slice(0,2).toUpperCase(); }
+    const info=document.createElement("div");
+    info.innerHTML = `<div style="font-weight:700">${c.name||""}</div><div class="small">${c.email||""}</div>`;
+    li.appendChild(t); li.appendChild(info);
+    li.onclick = async ()=>{
+      localStorage.setItem(LAST_ID_KEY, c.id);
+      const p = await loadProfileById(c.id);
+      if(p){ renderProfile(p); showCard(); }
+      else { alert("Could not load consultant. Please try again."); }
+    };
+    list.appendChild(li);
+  });
+
+  showChoose();
+}
+
+(async function init(){
+  const params = new URLSearchParams(location.search);
+  const incomingId = params.get("id");
+  if (incomingId) localStorage.setItem(LAST_ID_KEY, incomingId);
+  const id = incomingId || localStorage.getItem(LAST_ID_KEY);
+
+  if(!id){
+    // No id anywhere → show minimal chooser
+    await renderChooser();
+    return;
+  }
+
+  const profile = await loadProfileById(id);
+  if(!profile){
+    // If lookup fails (e.g., storage mismatch), show chooser
+    await renderChooser();
+    return;
+  }
+
+  renderProfile(profile);
+  showCard();
 })();
 </script>
 </body>
